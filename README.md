@@ -1,83 +1,118 @@
-# SariCoach – Retail Intelligence for Sari-Sari Stores 🏪
+# SariCoach: Retail AI Agent for Micro-Enterprises 🏪
 
-![Sanity Check](../../actions/workflows/sanity-check.yml/badge.svg)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://agents-intensive-saricoach.vercel.app)
+[![Sanity Check](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml/badge.svg)](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml)
 
-SariCoach is a multimodal retail coach for micro-retailers in the Philippines. It combines **Odoo ERP data** with **AI Agents** to provide actionable daily insights.
+> **Winner/Submission for [Hackathon Name]**
+>
+> SariCoach is a "Pocket Intelligence" layer for Sari-Sari stores (micro-retailers). It transforms raw transaction data into actionable, plain-English advice using multimodal AI agents.
 
-## 🏗️ Architecture
+-----
 
-```ascii
-[ React Frontend ] <--> [ FastAPI Backend ] <--> [ Supabase (Postgres) ]
-      (Mobile)              (Service)                  (Data)
-                               ^
-                               |
-                        [ Gemini AI ]
-                          (Brain)
+## 🏗️ Hybrid Cloud Architecture
+
+SariCoach uses a robust **Hybrid Deployment Strategy** to overcome serverless limitations and deliver real-time AI insights.
+
+```mermaid
+graph LR
+    User[📱 Mobile User] -->|HTTPS| Vercel[⚡ Vercel Edge]
+    subgraph "Secure Proxy Layer"
+        Vercel -->|Rewrite Rule| DO[🌊 DigitalOcean Droplet]
+    end
+    
+    subgraph "Backend Core (8GB RAM)"
+        DO -->|FastAPI| Agent[🤖 Coach Agent]
+        Agent -->|RAG Context| DB[(🗄️ Supabase)]
+        Agent -->|Reasoning| Gemini[✨ Google Gemini]
+    end
 ```
 
-## ✅ Quick Verification
+  * **Frontend:** React (Vite) hosted on **Vercel** for global edge caching.
+  * **Secure Proxy:** Vercel Rewrites tunnel API requests to the backend, solving Mixed Content (HTTPS/HTTP) issues without complex SSL setup.
+  * **Backend:** FastAPI hosted on a **DigitalOcean Droplet** (8GB RAM) to handle heavy dataframes and AI logic that exceeds serverless limits.
+  * **Data:** **Supabase** (PostgreSQL) with Connection Pooling (Port 6543) for high-concurrency writes.
 
-Follow these 3 steps to confirm the system is live:
+-----
 
-1.  **Frontend Boot:**
-    ```bash
-    cd dashboard && npm run dev
-    # Visit http://localhost:5173
-    ```
-2.  **API Health Check:**
-    ```bash
-    curl http://localhost:8000/api/health
-    # Should return: {"status": "ok"}
-    ```
-3.  **Data Flow Test:**
-    ```bash
-    curl http://localhost:8000/api/store/1/summary
-    # Should return JSON with "store_name", "kpis", etc.
-    ```
+## 🚀 Key Features
 
-## 🩺 The Health Check Script
+  * **📊 Real-Time Dashboard:** "Square-style" visualization of revenue, volume, and traffic trends.
+  * **🧠 Context-Aware Coach:** The AI doesn't just chat; it *sees* your store's data. It knows your sales are down 5% before you ask.
+  * **🛡️ Fail-Safe Data Layer:** Automatically switches between "Live Database" mode and "Kaggle/CSV" mode for resilience.
 
-For a full system diagnosis (Backend + DB + AI), run the automated sanity script:
+-----
+
+## 🛠️ Quick Start (Local Dev)
+
+**1. Clone the Repo**
 
 ```bash
-python check_prod.py
+git clone https://github.com/jgtolentino/saricoach-retail-insights.git
+cd saricoach-retail-insights
 ```
 
-**Success Output:**
-```text
-🚀 Testing Production at http://localhost:8000...
-✅ Health Check: OK
-✅ Data Fetch: OK (Store: Sari-Sari Store #1)
-✨ System Ready for Demo.
-```
+**2. Backend Setup**
 
-If this script fails, consult the [Troubleshooting Guide](docs/TROUBLESHOOTING.md).
-
-## 🚀 Getting Started
-
-### 1. Backend Service
 ```bash
-# Install dependencies
-pip install -r service/requirements.txt
-
-# Run server
-uvicorn service.app.main:app --reload --port 8000
+cd service
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+# Backend is now live at localhost:8000
 ```
 
-### 2. Mobile Dashboard
+**3. Frontend Setup**
+
 ```bash
 cd dashboard
 npm install
 npm run dev
+# Frontend is now live at localhost:5173
 ```
 
-### 3. Environment Variables
-Ensure you have a `.env` (or `.env.local`) file in `service/` with:
-- `SARICOACH_DATABASE_URL` (Supabase connection)
-- `SARICOACH_GOOGLE_API_KEY` (Gemini API)
+-----
 
-## 📚 Documentation
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [API Reference](docs/API.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
-- [Troubleshooting & Diagnostics](docs/TROUBLESHOOTING.md)
+## 🔧 Troubleshooting & Diagnostics
+
+If you are a judge running this locally, here is how to fix common issues:
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
+| **Red "Failed to load" box** | Backend is offline or CORS issue | Ensure `uvicorn` is running on port 8000. Check console for "Connection Refused". |
+| **"Coach Unreachable"** | Missing API Key | Ensure `SARICOACH_GOOGLE_API_KEY` is set in `service/.env`. |
+| **Database Timeout** | IPv4/IPv6 mismatch | Use the **Supabase Pooler URL** (Port 6543), not the Direct Connection (Port 5432). |
+| **Mixed Content Error** | HTTPS Frontend talking to HTTP Backend | Use the Vercel Production link (which has the Proxy fix) instead of mixing local/prod URLs. |
+
+-----
+
+## 📂 Project Structure
+
+```text
+saricoach/
+├── .github/              # CI/CD Workflows (Green Badge)
+├── dashboard/            # React Frontend (ShadCN UI + Recharts)
+├── service/              # FastAPI Backend + Gemini Agent
+│   ├── app/routers/      # API Endpoints (Store, Coach)
+│   └── backend/          # Pluggable Data Layer (Supabase/CSV)
+├── data/                 # Raw Kaggle Datasets & Seed Scripts
+└── vercel.json           # Production Proxy Configuration
+```
+
+-----
+
+## 🎥 Demo Video
+
+[Click here to watch the walkthrough](https://www.google.com/search?q=%5BYOUR_YOUTUBE_LINK%5D)
+
+-----
+
+### 🏁 Final Pre-Submission Checklist
+
+You are ready. Do these last 3 things:
+
+1.  **Repo Settings:** Go to GitHub -\> Settings. Ensure "Visibility" is **Public** so judges can see it.
+2.  **About Section:** On the main repo page, click the "Gear" icon on the right (About).
+      * **Website:** Paste your Vercel URL (`https://agents-intensive-saricoach.vercel.app`).
+      * **Topics:** Add `hackathon`, `ai-agent`, `supabase`, `fastapi`, `react`.
+3.  **Submission Form:** When asked for "Deployment URL," give the **Vercel** link. When asked for "Repo," give the **GitHub** link.

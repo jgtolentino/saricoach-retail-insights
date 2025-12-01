@@ -1,10 +1,15 @@
+```python
 import requests
 import sys
 import os
+from dotenv import load_dotenv
 
 # Default to localhost for testing, but allow override
+# Load environment variables
+load_dotenv(dotenv_path="service/.env")
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 STORE_ID = 1
+GEMINI_API_KEY = os.getenv("SARICOACH_GOOGLE_API_KEY")
 
 def run_tests():
     print(f"🚀 Testing Production at {API_URL}...")
