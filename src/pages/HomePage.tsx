@@ -1,22 +1,65 @@
+import { useEffect, useState } from 'react';
 import { Settings } from 'lucide-react';
 import { MetricCard } from '../components/cards/MetricCard';
 import { InsightCard } from '../components/cards/InsightCard';
 import { VolumeChart } from '../components/charts/VolumeChart';
 
+type Kpi = {
+    label: string;
+    value: string | number;
+    delta_pct?: number | null;
+    trend?: 'up' | 'down' | 'neutral';
+};
+
+type ChartPoint = {
+    date: string;
+    volume: number;
+};
+
+type StoreSummary = {
+    store_id: number;
+    store_name: string;
+    period: string;
+    kpis: Kpi[];
+    chart: ChartPoint[];
+    insights: string[];
+    coach_message: string;
+};
+
+const DEFAULT_STORE_ID = 1;
+
 export function HomePage() {
-    // Mock data for now - will connect to Lovable Cloud later
-    const data = {
-        store_name: "Sari-Sari Store #1",
-        period: "Today",
-        coach_message: "Welcome to your store dashboard! Connect your data to get personalized insights.",
-        kpis: [
-            { label: "Revenue", value: "₱0", trend: "neutral" as const },
-            { label: "Transactions", value: "0", trend: "neutral" as const },
-            { label: "Avg Basket", value: "₱0", trend: "neutral" as const },
-            { label: "Top Item", value: "-", trend: "neutral" as const }
-        ],
-        chart: []
-    };
+    const [data, setData] = useState<StoreSummary | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`/api/store/${DEFAULT_STORE_ID}/summary`)
+            .then(async (res) => {
+                if (!res.ok) {
+                    throw new Error(`Failed to load store summary (${res.status})`);
+                }
+                return res.json();
+            })
+            .then((json: StoreSummary) => {
+                setData(json);
+                setError(null);
+            })
+            .catch((err: Error) => {
+                console.error(err);
+                setError("Failed to load store summary");
+            })
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return <div className="p-4 text-sm text-text-muted">Loading store data…</div>;
+    }
+
+    if (error || !data) {
+        return <div className="p-4 text-sm text-status-error">{error ?? "No data"}</div>;
+    }
 
     return (
         <div className="min-h-screen bg-surface pb-24">
@@ -40,7 +83,7 @@ export function HomePage() {
 
                 {/* Metric Grid */}
                 <div className="grid grid-cols-2 gap-3">
-                    {data.kpis.map((kpi: any, idx: number) => (
+                    {data.kpis.map((kpi, idx: number) => (
                         <MetricCard
                             key={idx}
                             label={kpi.label}
