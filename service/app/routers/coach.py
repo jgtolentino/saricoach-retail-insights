@@ -45,8 +45,8 @@ def ask_coach(payload: CoachRequest, backend: DataBackend = Depends(get_backend)
 
     try:
         # 3. Call Gemini
-        # using gemini-2.0-flash as verified previously
-        model = genai.GenerativeModel("gemini-2.0-flash", system_instruction=system_instruction)
+        # using gemini-1.5-flash for stability
+        model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=system_instruction)
         
         response = model.generate_content(payload.question)
         return {"answer": response.text}
