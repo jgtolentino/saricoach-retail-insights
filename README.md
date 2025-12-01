@@ -1,6 +1,7 @@
 # SariCoach: Retail AI Agent for Micro-Enterprises 🏪
 
 [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://agents-intensive-saricoach.vercel.app)
+[![Status](https://img.shields.io/badge/status-production-blue.svg)](https://agents-intensive-saricoach.vercel.app)
 [![Sanity Check](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml/badge.svg)](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml)
 
 > **Winner/Submission for [Hackathon Name]**
@@ -112,8 +113,24 @@ Future enhancements (not yet implemented in this deployment):
 
 -----
 
-## 🛠️ Quick Start (Local Dev)
+## 🛠️ Installation & Setup
 
+### Production Environment Variables
+To run this in production (Hybrid Mode), you need the following:
+
+**Backend (.env):**
+```ini
+SARICOACH_DATA_BACKEND=supabase
+SARICOACH_DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:6543/postgres?pgbouncer=true
+SARICOACH_GOOGLE_API_KEY=AIza...
+```
+
+**Frontend (Vercel):**
+```ini
+VITE_API_URL=http://188.166.237.231:8000
+```
+
+### Local Development
 **1. Clone the Repo**
 
 ```bash

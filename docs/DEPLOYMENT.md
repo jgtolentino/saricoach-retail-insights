@@ -1,106 +1,118 @@
-# Deployment Guide – SariCoach
+# Hybrid Deployment Guide – SariCoach 🚀
 
-SariCoach supports two environments:
+SariCoach uses a **Hybrid Cloud Architecture** to combine the best of Serverless (Frontend) and Dedicated Compute (Backend).
 
-1. **Supabase mode (primary)** – production-style deployment using a real Postgres database.
-2. **CSV mode (optional)** – offline / Kaggle demo using local CSVs only.
+## 🏗️ Why Hybrid?
 
-The Kaggle CSVs are used as **seed inputs**; the live system runs entirely on Supabase.
+| Component | Technology | Why? |
+| :--- | :--- | :--- |
+| **Frontend** | **Vercel (Edge)** | Instant global loading, zero-config CI/CD, and free SSL. |
+| **Backend** | **DigitalOcean Droplet** | **Heavy Compute:** The AI Agent processes large Pandas DataFrames and maintains state, which hits Vercel's 250MB / 10s timeout limits. A dedicated 8GB RAM Droplet ensures stability. |
+| **Database** | **Supabase** | Managed PostgreSQL with Connection Pooling (pgbouncer) to handle high concurrency from the backend. |
 
 ---
 
-## 1. Supabase Mode (Primary Runtime)
+## 🌊 Backend Deployment (DigitalOcean)
 
-### 1.1. Prerequisites
+The backend is hosted on a standard Ubuntu Droplet.
 
-- Supabase project created.
-- Postgres connection string (DATABASE_URL).
-- Python 3.11+
-- Node.js (for the dashboard).
-
-### 1.2. Apply Schema and Seed
-
-From the project root:
-
+### 1. Access the Server
 ```bash
-# 1) Apply core schema
-export DATABASE_URL="postgres://<user>:<pass>@<host>:<port>/<db_name>"
-
-psql "$DATABASE_URL" -f supabase/schema/001_saricoach_schema.sql
-
-# 2) Apply demo / synthetic seed data
-psql "$DATABASE_URL" -f supabase/seed/seed_saricoach.sql
+ssh root@188.166.237.231
 ```
 
-This creates and populates the `saricoach.*` tables.
-
----
-
-## 2. Run the API Against Supabase
-
-The FastAPI service always reads from the database in this mode.
-
+### 2. Initial Setup (One-Time)
 ```bash
-# Environment
-export SARICOACH_DATA_BACKEND=supabase
-export DATABASE_URL="postgres://<user>:<pass>@<host>:<port>/<db_name>"
+# Update system
+apt update && apt upgrade -y
+apt install python3-pip python3-venv git -y
 
-# Optional: enable Gemini-powered coaching if you have a key
-# export SARICOACH_GOOGLE_API_KEY="your_gemini_key"
+# Clone Repository
+git clone https://github.com/jgtolentino/saricoach-retail-insights.git
+cd saricoach-retail-insights
 
-# Install deps
-pip install -r requirements.txt
+# Setup Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
 
-# Run API
-uvicorn service.app.main:app --host 0.0.0.0 --port 8000
+# Install Dependencies
+pip install -r service/requirements.txt
 ```
 
-Key endpoints:
-
-* `GET /api/health` – health check
-* `GET /api/store/{store_id}/summary` – KPIs + coach output for a store
-* `POST /api/coach/recommendations` – structured coaching request/response
-
-See `docs/API.md` for payload details.
-
----
-
-## 3. Deploy the React Mobile Dashboard
-
-From `dashboard/`:
+### 3. Configure Secrets
+Create the `.env` file in `service/.env`:
 
 ```bash
-cd dashboard
-npm install
-
-# Local dev
-VITE_API_URL=http://localhost:8000 npm run dev
+nano service/.env
 ```
 
-For Netlify / Vercel:
+**Required Variables:**
+```ini
+# Database
+SARICOACH_DATA_BACKEND=supabase
+SARICOACH_DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:6543/postgres?pgbouncer=true
 
-* Set `VITE_API_URL` in project environment variables to your deployed API URL (e.g. `https://api.saricoach.example.com`).
-* Build and deploy with their standard React/Vite flow (`npm run build`).
+# AI
+SARICOACH_GOOGLE_API_KEY=AIza...
 
-The dashboard does **not** talk to CSVs; it only talks to the FastAPI API.
+# CORS (Allow Vercel)
+SARICOACH_CORS_ORIGINS=https://agents-intensive-saricoach.vercel.app,http://localhost:5173
+```
+
+### 4. Run the Service
+We use `uvicorn` to run the FastAPI app. Use `nohup` to keep it running after disconnect.
+
+```bash
+# Stop existing process
+pkill uvicorn
+
+# Start new process
+nohup uvicorn service.app.main:app --host 0.0.0.0 --port 8000 &
+
+# Verify it's running
+tail -f nohup.out
+```
 
 ---
 
-## 4. CSV / Kaggle Mode (Optional Demo)
+## ⚡ Frontend Deployment (Vercel)
 
-For the Kaggle notebook and pure-offline demos, you can still use the processed CSVs:
+The frontend is deployed via Vercel Git Integration.
 
-1. Generate processed data from raw Kaggle-style inputs:
+### 1. Vercel Configuration (`vercel.json`)
+We use a **Proxy Rewrite** to tunnel API requests to the Droplet. This solves the "Mixed Content" error (HTTPS Frontend -> HTTP Backend).
 
-   ```bash
-   python3 seed_saricoach_data.py
-   ```
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://188.166.237.231:8000/api/:path*"
+    }
+  ]
+}
+```
 
-   This writes:
+### 2. Environment Variables
+Set these in the Vercel Project Settings:
 
-   * `data/processed/*.csv` – canonical tables
-   * `data/processed/seed_saricoach.sql` – seed file used above
+*   `VITE_API_URL`: `http://188.166.237.231:8000` (Used by the Proxy)
+*   `VITE_SUPABASE_URL`: `[Your Supabase URL]`
+*   `VITE_SUPABASE_ANON_KEY`: `[Your Supabase Key]`
 
-2. In the **notebook**, the SariCoach code reads `data/processed/*.csv` directly (no DB, no network).
+### 3. Deploy
+Push to `main` to trigger a deployment.
 
-This keeps the Kaggle submission self-contained while the deployed app uses Supabase as its single source of truth.
+---
+
+## 🔄 Updates & Maintenance
+
+To update the backend code:
+
+```bash
+ssh root@188.166.237.231
+cd saricoach-retail-insights
+git pull origin main
+pkill uvicorn
+nohup uvicorn service.app.main:app --host 0.0.0.0 --port 8000 &
+```
