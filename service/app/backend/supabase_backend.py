@@ -46,20 +46,20 @@ class SupabaseBackend(DataBackend):
 
                 latest_date = latest_date_res[0]
 
-                # 3. Fetch Daily Metrics for the Latest Date
+                # 3. Fetch Daily Metrics for the Latest 2 Days (for Deltas)
                 cur.execute(
                     """
-                    SELECT volume, revenue, avg_basket_size, avg_duration_seconds
+                    SELECT date, volume, revenue, avg_basket_size, avg_duration_seconds
                     FROM daily_metrics
-                    WHERE store_id = %s AND date = %s
+                    WHERE store_id = %s
+                    ORDER BY date DESC
+                    LIMIT 2
                     """,
-                    (store_id, latest_date),
+                    (store_id,),
                 )
-                metrics = cur.fetchone()
+                rows = cur.fetchall()
 
-                if not metrics:
-                    # Should not happen if latest_date is derived from daily_metrics,
-                    # but handle defensively.
+                if not rows:
                     return StoreSummary(
                         store_id=store_id,
                         store_name=store_name,
@@ -70,7 +70,25 @@ class SupabaseBackend(DataBackend):
                         coach_message="No data recorded yet."
                     )
 
-                (vol, rev, basket, dur) = metrics
+                # Current Day (Latest)
+                curr = rows[0]
+                curr_vol, curr_rev, curr_basket, curr_dur = curr[1], curr[2], curr[3], curr[4]
+
+                # Previous Day (for Deltas)
+                if len(rows) > 1:
+                    prev = rows[1]
+                    prev_vol, prev_rev, prev_basket, prev_dur = prev[1], prev[2], prev[3], prev[4]
+                    
+                    def calc_delta(curr, prev):
+                        if not prev or prev == 0: return 0.0
+                        return ((curr - prev) / prev) * 100.0
+
+                    d_vol = calc_delta(curr_vol, prev_vol)
+                    d_rev = calc_delta(curr_rev, prev_rev)
+                    d_basket = calc_delta(curr_basket, prev_basket)
+                    d_dur = calc_delta(curr_dur, prev_dur)
+                else:
+                    d_vol = d_rev = d_basket = d_dur = 0.0
 
                 # 4. Fetch Chart Data
                 cur.execute(
@@ -111,10 +129,10 @@ class SupabaseBackend(DataBackend):
                     store_name=store_name,
                     period=f"Latest ({period_label})",
                     kpis=[
-                        Kpi(label="Daily Volume", value=vol, delta_pct=12.3, trend="up"),  # Deltas hardcoded for demo
-                        Kpi(label="Daily Revenue", value=f"₱{rev:,.0f}", delta_pct=-5.1, trend="down"),
-                        Kpi(label="Avg Basket", value=float(basket), delta_pct=2.0, trend="up"),
-                        Kpi(label="Avg Duration", value=f"{dur}s", delta_pct=0.0, trend="neutral"),
+                        Kpi(label="Daily Volume", value=curr_vol, delta_pct=round(d_vol, 1), trend="up" if d_vol >= 0 else "down"),
+                        Kpi(label="Daily Revenue", value=f"₱{curr_rev:,.0f}", delta_pct=round(d_rev, 1), trend="up" if d_rev >= 0 else "down"),
+                        Kpi(label="Avg Basket", value=float(curr_basket), delta_pct=round(d_basket, 1), trend="up" if d_basket >= 0 else "down"),
+                        Kpi(label="Avg Duration", value=f"{curr_dur}s", delta_pct=round(d_dur, 1), trend="up" if d_dur >= 0 else "down"),
                     ],
                     chart=chart_data,
                     insights=insights_list,
