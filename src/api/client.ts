@@ -1,5 +1,5 @@
 // dashboard/src/api/client.ts
-export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+export const API_BASE_URL = "";
 
 export async function apiGet<T>(path: string): Promise<T> {
     const res = await fetch(`${API_BASE_URL}${path}`);
