@@ -10,7 +10,16 @@ def build_context_from_supabase() -> DataContext:
     """
     db_url = os.environ.get("DATABASE_URL")
     if not db_url:
-        raise ValueError("DATABASE_URL environment variable is required for Supabase backend.")
+        # Fallback: Construct from Vercel/Supabase individual vars
+        user = os.environ.get("POSTGRES_USER")
+        password = os.environ.get("POSTGRES_PASSWORD")
+        host = os.environ.get("POSTGRES_HOST")
+        db = os.environ.get("POSTGRES_DATABASE")
+        
+        if user and password and host and db:
+            db_url = f"postgresql://{user}:{password}@{host}:5432/{db}"
+        else:
+            raise ValueError("DATABASE_URL environment variable (or POSTGRES_* vars) is required for Supabase backend.")
 
     # Use sqlalchemy for pandas read_sql
     engine = create_engine(db_url)
