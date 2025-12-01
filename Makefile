@@ -9,7 +9,7 @@ test-api:
 	python3 -m pytest tests -q
 
 test-e2e:
-	cd dashboard && npx playwright test
+	npx playwright test
 
 test-all: test-unit test-api
 	# e2e can be optional in CI or run manually
