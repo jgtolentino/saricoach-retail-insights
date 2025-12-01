@@ -16,16 +16,44 @@ SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge
 
 ```mermaid
 graph LR
-    User[📱 Mobile User] -->|HTTPS| Vercel[⚡ Vercel Edge (Frontend)]
-    subgraph "Secure Proxy Layer"
-        Vercel -->|Rewrite Rule| DO[🌊 DigitalOcean Droplet (Backend)]
+    %% Brand Styling
+    classDef user fill:#FCA5A5,stroke:#333,stroke-width:2px;
+    classDef vercel fill:#000000,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef do fill:#0080FF,stroke:#333,stroke-width:2px,color:#fff;
+    classDef db fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#fff;
+    classDef ai fill:#8E75B2,stroke:#333,stroke-width:2px,color:#fff;
+    classDef connection stroke:#666,stroke-width:2px;
+
+    %% Actors
+    User((👤 Store Owner)):::user
+
+    %% Vercel Environment
+    subgraph Vercel [⚡ Vercel (Edge Network)]
+        direction TB
+        Frontend[📱 React / Vite SPA]:::vercel
+        Proxy[🛡️ Rewrite Proxy<br/>(vercel.json)]:::vercel
     end
-    
-    subgraph "Backend Core (8GB RAM)"
-        DO -->|FastAPI| Agent[🤖 Coach Agent]
-        Agent -->|RAG Context| DB[(🗄️ Supabase)]
-        Agent -->|Reasoning| Gemini[✨ Google Gemini]
+
+    %% DigitalOcean Environment
+    subgraph DigitalOcean [🌊 DigitalOcean Droplet]
+        direction TB
+        Backend[⚙️ FastAPI Server<br/>(Port 8000)]:::do
+        Agent[🤖 Agent Logic<br/>(RAG & Context)]:::do
     end
+
+    %% External Services
+    subgraph Services [☁️ Managed Services]
+        Supabase[("🗄️ Supabase<br/>(Postgres)")]:::db
+        Gemini(("✨ Google Gemini<br/>(1.5 Flash)")):::ai
+    end
+
+    %% Flows
+    User ==>|HTTPS| Frontend
+    Frontend ==>|/api| Proxy
+    Proxy -.->|HTTP Tunnel| Backend
+    Backend <-->|SQL| Supabase
+    Backend --o|Prompt| Agent
+    Agent <-->|Inference| Gemini
 ```
 
 ### Why this Architecture?
