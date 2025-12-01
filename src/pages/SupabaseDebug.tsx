@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { supabase } from '../integrations/supabase/client'
 
 function SupabaseDebug() {
     const [stores, setStores] = useState<any[]>([])
@@ -8,16 +8,8 @@ function SupabaseDebug() {
     useEffect(() => {
         async function getStores() {
             try {
-                // Query the 'stores' table in the 'kaggle' schema (or public if you exposed it)
-                // Note: supabase-js client usually defaults to 'public' schema.
-                // If tables are in 'kaggle' schema, we might need to adjust or use a view in public.
-                // For now, let's try selecting from 'kaggle.stores' if the client supports it, 
-                // or assume we might need to expose it. 
-                // Actually, the seed script creates 'kaggle.stores'. 
-                // Let's try to query it. If it fails, we'll see the error.
-
-                const { data, error } = await supabase
-                    .from('stores') // This assumes public schema or exposed view
+                const { data, error } = await (supabase as any)
+                    .from('stores')
                     .select('*')
                     .limit(5)
 
