@@ -1,0 +1,63 @@
+:root {
+    /* Key M3 roles */
+    --md-sys-color-primary: #2563eb;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #dbeafe;
+    --md-sys-color-on-primary-container: #0f172a;
+
+    --md-sys-color-secondary: #64748b;
+    --md-sys-color-on-secondary: #ffffff;
+
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-on-surface: #0f172a;
+    --md-sys-color-surface-variant: #f3f4f6;
+    --md-sys-color-outline: #e5e7eb;
+
+    --md-sys-color-error: #ef4444;
+    --md-sys-color-on-error: #ffffff;
+
+    --md-sys-color-background: #f3f4f6;
+    --md-sys-color-on-background: #0f172a;
+
+    /* Bridge from M3 → app semantics */
+    --color-primary: var(--md-sys-color-primary);
+    --color-primary-soft: var(--md-sys-color-primary-container);
+    --color-danger: var(--md-sys-color-error);
+    --color-success: #16a34a;
+
+    --color-surface: var(--md-sys-color-surface);
+    --color-surface-variant: var(--md-sys-color-surface-variant);
+    --color-background: var(--md-sys-color-background);
+    --color-outline: var(--md-sys-color-outline);
+
+    --color-text-primary: var(--md-sys-color-on-background);
+    --color-text-secondary: #6b7280;
+
+    /* Typography Scale */
+    --md-sys-typescale-headline-large-size: 24px;
+    --md-sys-typescale-headline-large-weight: 600;
+
+    --md-sys-typescale-title-medium-size: 16px;
+    --md-sys-typescale-title-medium-weight: 600;
+
+    --md-sys-typescale-body-medium-size: 14px;
+    --md-sys-typescale-body-medium-weight: 400;
+
+    --md-sys-typescale-label-small-size: 11px;
+    --md-sys-typescale-label-small-weight: 500;
+
+    /* Shape */
+    --md-sys-shape-corner-small: 8px;
+    --md-sys-shape-corner-medium: 12px;
+    --md-sys-shape-corner-large: 16px;
+
+    --radius-card: var(--md-sys-shape-corner-large);
+    --radius-chip: 999px;
+
+    /* Elevation */
+    --md-sys-elevation-level1: 0 1px 3px rgba(15, 23, 42, 0.08);
+    --md-sys-elevation-level2: 0 3px 6px rgba(15, 23, 42, 0.10);
+
+    /* Motion */
+    --md-sys-motion-duration-short2: 150ms;
+}

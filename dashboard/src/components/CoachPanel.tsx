@@ -10,7 +10,10 @@ export const CoachPanel: React.FC<CoachPanelProps> = ({ coach }) => {
     if (!coach) return null;
 
     return (
-        <div className="bg-[var(--color-primary-soft)] rounded-2xl p-4 mb-4">
+        <div
+            className="bg-[var(--color-primary-soft)] rounded-[var(--radius-card)] p-4 mb-4"
+            style={{ boxShadow: "var(--md-sys-elevation-level1)" }}
+        >
             <div className="flex items-center justify-between mb-2">
                 <div>
                     <div className="text-xs text-[var(--color-text-secondary)]">Coach Suggestions</div>

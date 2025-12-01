@@ -624,6 +624,90 @@ def main():
 
     with sql_path.open("w", encoding="utf-8") as f:
         f.write("CREATE SCHEMA IF NOT EXISTS kaggle;\n\n")
+        
+        # Define tables
+        f.write("""
+        CREATE TABLE IF NOT EXISTS kaggle.brands (
+            brand_id INT PRIMARY KEY,
+            brand_name TEXT,
+            category TEXT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.products (
+            product_id INT PRIMARY KEY,
+            sku TEXT,
+            barcode TEXT,
+            brand_id INT,
+            product_name TEXT,
+            category TEXT,
+            pack_size TEXT,
+            pack_type TEXT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.stores (
+            store_id INT PRIMARY KEY,
+            store_name TEXT,
+            region TEXT,
+            city TEXT,
+            barangay TEXT,
+            store_type TEXT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.transactions (
+            transaction_id TEXT PRIMARY KEY,
+            store_id INT,
+            tx_timestamp TIMESTAMP,
+            total_amount FLOAT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.transaction_lines (
+            transaction_id TEXT,
+            line_no INT,
+            product_id INT,
+            brand_id INT,
+            quantity INT,
+            price_unit FLOAT,
+            subtotal FLOAT,
+            PRIMARY KEY (transaction_id, line_no)
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.shelf_vision_events (
+            id TEXT PRIMARY KEY,
+            store_id INT,
+            event_timestamp TIMESTAMP,
+            brand_id INT,
+            facings INT,
+            share_of_shelf FLOAT,
+            oos_flag BOOLEAN,
+            confidence FLOAT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.stt_events (
+            id TEXT PRIMARY KEY,
+            store_id INT,
+            event_timestamp TIMESTAMP,
+            brand_id INT,
+            raw_text TEXT,
+            intent_label TEXT,
+            sentiment_score FLOAT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.weather_daily (
+            id TEXT PRIMARY KEY,
+            store_id INT,
+            date DATE,
+            temp_c FLOAT,
+            rainfall_mm FLOAT,
+            condition TEXT
+        );
+        
+        CREATE TABLE IF NOT EXISTS kaggle.foot_traffic_daily (
+            id TEXT PRIMARY KEY,
+            store_id INT,
+            date DATE,
+            traffic_index FLOAT
+        );
+        \n""")
 
     export_sql_insert("kaggle.brands", brands_df, sql_path)
     export_sql_insert("kaggle.products", products_df, sql_path)

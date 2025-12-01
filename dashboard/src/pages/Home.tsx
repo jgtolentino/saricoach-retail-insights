@@ -39,10 +39,22 @@ export const HomePage: React.FC = () => {
     return (
         <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
             <header className="pt-4 px-4 pb-2">
-                <div className="text-xs text-[var(--color-text-secondary)]">
+                <div
+                    className="text-xs text-[var(--color-text-secondary)]"
+                    style={{
+                        fontSize: "var(--md-sys-typescale-label-small-size)",
+                        fontWeight: 500,
+                    }}
+                >
                     Today · Store #{data.store_id}
                 </div>
-                <div className="text-xl font-semibold text-[var(--color-text-primary)]">
+                <div
+                    className="text-xl font-semibold text-[var(--color-text-primary)]"
+                    style={{
+                        fontSize: "var(--md-sys-typescale-headline-large-size)",
+                        fontWeight: "var(--md-sys-typescale-headline-large-weight)" as any,
+                    }}
+                >
                     SariCoach
                 </div>
             </header>

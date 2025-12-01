@@ -9,7 +9,7 @@ interface KpiCardProps {
 
 export const KpiCard: React.FC<KpiCardProps> = ({ label, value, subtitle }) => {
     return (
-        <div className="min-w-[140px] bg-[var(--color-surface)] rounded-2xl px-4 py-3 mr-3 shadow-sm">
+        <div className="min-w-[140px] bg-[var(--color-surface)] rounded-[var(--radius-card)] px-4 py-3 mr-3 shadow-sm border border-[var(--color-outline)]">
             <div className="text-xs text-[var(--color-text-secondary)] mb-1">{label}</div>
             <div className="text-lg font-semibold text-[var(--color-text-primary)]">{value}</div>
             {subtitle && (

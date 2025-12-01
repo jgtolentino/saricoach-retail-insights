@@ -29,7 +29,7 @@ function App() {
             <ChatAssistant />
 
             {/* Bottom Navigation */}
-            <nav className="h-16 bg-[var(--color-surface)] border-t border-gray-200 flex items-center justify-around px-2 pb-safe">
+            <nav className="h-16 bg-[var(--color-surface)] border-t border-[var(--color-outline)] flex items-center justify-around px-2 pb-safe">
                 <NavButton
                     icon={<Home size={24} />}
                     label="Home"
@@ -69,7 +69,7 @@ interface NavButtonProps {
 const NavButton: React.FC<NavButtonProps> = ({ icon, label, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-secondary)]'
+        className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors duration-200 ${isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-secondary)]'
             }`}
     >
         {icon}
