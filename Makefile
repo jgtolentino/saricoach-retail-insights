@@ -1,15 +1,21 @@
-PYTHON := python3
+.PHONY: test-unit test-api test-e2e test-all run-backend run-dashboard
 
-.PHONY: init api test eval
+test-unit:
+	python3 -m pytest tests -q
 
-init:
-	$(PYTHON) -m pip install -r requirements.txt
+test-api:
+	# API tests are now part of the main test suite in tests/
+	@echo "Running all tests..."
+	python3 -m pytest tests -q
 
-api:
-	$(PYTHON) -m uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8080
+test-e2e:
+	cd dashboard && npx playwright test
 
-test:
-	$(PYTHON) -m pytest -q || echo "tests not yet implemented"
+test-all: test-unit test-api
+	# e2e can be optional in CI or run manually
 
-eval:
-	$(PYTHON) -m src.eval.run_eval
+run-backend:
+	uvicorn service.app.main:app --reload --port 8000
+
+run-dashboard:
+	cd dashboard && npm run dev

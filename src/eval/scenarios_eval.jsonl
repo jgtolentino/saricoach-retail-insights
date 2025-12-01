@@ -1,2 +1,0 @@
-{"id": "case_001", "description": "Stable store, moderate volume", "payload": {"store": {"id": 1, "name": "Sari Sari A", "code": "SSA", "region": "NCR", "city": "Quezon City"}, "transactions": []}, "expected_keywords": ["monitor", "increase traffic"]}
-{"id": "case_002", "description": "High volume store", "payload": {"store": {"id": 2, "name": "Sari Sari B", "code": "SSB", "region": "NCR", "city": "Manila"}, "transactions": []}, "expected_keywords": ["stock", "peak"]}

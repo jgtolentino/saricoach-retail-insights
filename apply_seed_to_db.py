@@ -2,8 +2,18 @@ import os
 import psycopg2
 from pathlib import Path
 
-# Credentials from user provided context
-DB_URL = "postgres://postgres.spdtwktxdalcfigzeqrz:SHWYXDMFAwXI1drT@aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Credentials from environment
+DB_URL = os.getenv("DATABASE_URL")
+if not DB_URL:
+    # Fallback or error
+    print("Warning: DATABASE_URL not found in .env. Please set it.")
+    # Keep the old one as a fallback comment or just fail? 
+    # Better to fail or use a placeholder that won't work but shows intent.
+    DB_URL = "postgresql://postgres:[YOUR_PASSWORD]@db.spdtwktxdalcfigzeqrz.supabase.co:5432/postgres"
 
 SQL_FILE = Path("data/processed/seed_saricoach.sql")
 
@@ -27,7 +37,7 @@ def main():
         cur.execute(sql_content)
         conn.commit()
         
-        print("✅ Migration successful! Data seeded to 'kaggle' schema.")
+        print("✅ Migration successful! Data seeded to 'saricoach' schema.")
         
         cur.close()
         conn.close()

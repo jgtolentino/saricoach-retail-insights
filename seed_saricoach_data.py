@@ -623,17 +623,17 @@ def main():
     print(f"[*] Exporting Postgres INSERTs to {sql_path}...")
 
     with sql_path.open("w", encoding="utf-8") as f:
-        f.write("CREATE SCHEMA IF NOT EXISTS kaggle;\n\n")
+        f.write("CREATE SCHEMA IF NOT EXISTS saricoach;\n\n")
         
         # Define tables
         f.write("""
-        CREATE TABLE IF NOT EXISTS kaggle.brands (
+        CREATE TABLE IF NOT EXISTS saricoach.brands (
             brand_id INT PRIMARY KEY,
             brand_name TEXT,
             category TEXT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.products (
+        CREATE TABLE IF NOT EXISTS saricoach.products (
             product_id INT PRIMARY KEY,
             sku TEXT,
             barcode TEXT,
@@ -644,7 +644,14 @@ def main():
             pack_type TEXT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.stores (
+        CREATE TABLE IF NOT EXISTS saricoach.stores (
+            product_name TEXT,
+            category TEXT,
+            pack_size TEXT,
+            pack_type TEXT
+        );
+        
+        CREATE TABLE IF NOT EXISTS saricoach.stores (
             store_id INT PRIMARY KEY,
             store_name TEXT,
             region TEXT,
@@ -653,14 +660,14 @@ def main():
             store_type TEXT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.transactions (
+        CREATE TABLE IF NOT EXISTS saricoach.transactions (
             transaction_id TEXT PRIMARY KEY,
             store_id INT,
             tx_timestamp TIMESTAMP,
             total_amount FLOAT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.transaction_lines (
+        CREATE TABLE IF NOT EXISTS saricoach.transaction_lines (
             transaction_id TEXT,
             line_no INT,
             product_id INT,
@@ -671,7 +678,7 @@ def main():
             PRIMARY KEY (transaction_id, line_no)
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.shelf_vision_events (
+        CREATE TABLE IF NOT EXISTS saricoach.shelf_vision_events (
             id TEXT PRIMARY KEY,
             store_id INT,
             event_timestamp TIMESTAMP,
@@ -682,7 +689,7 @@ def main():
             confidence FLOAT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.stt_events (
+        CREATE TABLE IF NOT EXISTS saricoach.stt_events (
             id TEXT PRIMARY KEY,
             store_id INT,
             event_timestamp TIMESTAMP,
@@ -692,7 +699,7 @@ def main():
             sentiment_score FLOAT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.weather_daily (
+        CREATE TABLE IF NOT EXISTS saricoach.weather_daily (
             id TEXT PRIMARY KEY,
             store_id INT,
             date DATE,
@@ -701,7 +708,7 @@ def main():
             condition TEXT
         );
         
-        CREATE TABLE IF NOT EXISTS kaggle.foot_traffic_daily (
+        CREATE TABLE IF NOT EXISTS saricoach.foot_traffic_daily (
             id TEXT PRIMARY KEY,
             store_id INT,
             date DATE,
@@ -709,15 +716,15 @@ def main():
         );
         \n""")
 
-    export_sql_insert("kaggle.brands", brands_df, sql_path)
-    export_sql_insert("kaggle.products", products_df, sql_path)
-    export_sql_insert("kaggle.stores", stores_df, sql_path)
-    export_sql_insert("kaggle.transactions", transactions_df, sql_path)
-    export_sql_insert("kaggle.transaction_lines", transaction_lines_df, sql_path)
-    export_sql_insert("kaggle.shelf_vision_events", shelf_vision_df, sql_path)
-    export_sql_insert("kaggle.stt_events", stt_df, sql_path)
-    export_sql_insert("kaggle.weather_daily", weather_df, sql_path)
-    export_sql_insert("kaggle.foot_traffic_daily", traffic_df, sql_path)
+    export_sql_insert("saricoach.brands", brands_df, sql_path)
+    export_sql_insert("saricoach.products", products_df, sql_path)
+    export_sql_insert("saricoach.stores", stores_df, sql_path)
+    export_sql_insert("saricoach.transactions", transactions_df, sql_path)
+    export_sql_insert("saricoach.transaction_lines", transaction_lines_df, sql_path)
+    export_sql_insert("saricoach.shelf_vision_events", shelf_vision_df, sql_path)
+    export_sql_insert("saricoach.stt_events", stt_df, sql_path)
+    export_sql_insert("saricoach.weather_daily", weather_df, sql_path)
+    export_sql_insert("saricoach.foot_traffic_daily", traffic_df, sql_path)
 
     print("[✓] SariCoach seed data generation complete.")
 

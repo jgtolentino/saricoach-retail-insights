@@ -1,0 +1,50 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]: "Today · Store #1"
+      - generic [ref=e8]: SariCoach
+    - main [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: Daily Sales
+          - generic [ref=e13]: ₱30
+          - generic [ref=e14]: 0.0% vs yesterday
+        - generic [ref=e15]:
+          - generic [ref=e16]: Stockout Risk
+          - generic [ref=e17]: low
+        - generic [ref=e18]:
+          - generic [ref=e19]: Hot Brand
+          - generic [ref=e20]: Test Brand
+      - generic [ref=e21]:
+        - generic [ref=e23]:
+          - generic [ref=e24]: Coach Suggestions
+          - generic [ref=e25]: Next 7 days
+        - list [ref=e26]:
+          - listitem [ref=e27]: Maintain current assortment and monitor daily sales; no urgent changes detected for the next 7 days.
+      - generic [ref=e28]:
+        - heading "Risks" [level=2] [ref=e29]
+        - list [ref=e30]:
+          - listitem [ref=e31]: No critical risks detected based on the last observation window.
+      - generic [ref=e32]:
+        - heading "Opportunities" [level=2] [ref=e33]
+        - list [ref=e34]:
+          - listitem [ref=e35]: Look for opportunities to test small promos on top-selling brands during high-traffic days.
+  - button "Open Chat Assistant" [ref=e36] [cursor=pointer]:
+    - img [ref=e37]
+  - navigation [ref=e39]:
+    - button "Home" [ref=e40] [cursor=pointer]:
+      - img [ref=e41]
+      - generic [ref=e44]: Home
+    - button "Insights" [ref=e45] [cursor=pointer]:
+      - img [ref=e46]
+      - generic [ref=e48]: Insights
+    - button "History" [ref=e49] [cursor=pointer]:
+      - img [ref=e50]
+      - generic [ref=e53]: History
+    - button "Settings" [ref=e54] [cursor=pointer]:
+      - img [ref=e55]
+      - generic [ref=e58]: Settings
+```

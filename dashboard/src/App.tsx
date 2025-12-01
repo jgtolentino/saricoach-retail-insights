@@ -6,9 +6,10 @@ import { InsightsPage } from './pages/Insights';
 import { HistoryPage } from './pages/History';
 import { SettingsPage } from './pages/Settings';
 import { ChatAssistant } from './components/ChatAssistant';
+import SupabaseDebug from './pages/SupabaseDebug';
 
 function App() {
-    const [activeTab, setActiveTab] = useState<'home' | 'insights' | 'history' | 'settings'>('home');
+    const [activeTab, setActiveTab] = useState<'home' | 'insights' | 'history' | 'settings' | 'debug'>('home');
 
     const renderContent = () => {
         switch (activeTab) {
@@ -16,6 +17,7 @@ function App() {
             case 'insights': return <InsightsPage />;
             case 'history': return <HistoryPage />;
             case 'settings': return <SettingsPage />;
+            case 'debug': return <SupabaseDebug />;
         }
     };
 

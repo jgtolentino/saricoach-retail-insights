@@ -1,4 +1,10 @@
 fastapi
-uvicorn[standard]
+uvicorn
+pandas
+numpy
+python-dotenv
+psycopg2-binary
+google-generativeai
+sqlalchemy
 pandas
 numpy
