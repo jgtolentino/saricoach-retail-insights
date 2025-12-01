@@ -1,7 +1,7 @@
 # SariCoach: Retail AI Agent for Micro-Enterprises 🏪
 
-[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://agents-intensive-saricoach.vercel.app)
-[![Status](https://img.shields.io/badge/status-production-blue.svg)](https://agents-intensive-saricoach.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://saricoach-retail-insights.vercel.app)
+[![Status](https://img.shields.io/badge/status-production-blue.svg)](https://saricoach-retail-insights.vercel.app)
 [![Sanity Check](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml/badge.svg)](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml)
 
 > **Winner/Submission for [Hackathon Name]**
@@ -12,13 +12,13 @@
 
 ## 🏗️ Hybrid Cloud Architecture
 
-SariCoach uses a robust **Hybrid Deployment Strategy** to overcome serverless limitations and deliver real-time AI insights.
+SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge with the power of a dedicated backend.
 
 ```mermaid
 graph LR
-    User[📱 Mobile User] -->|HTTPS| Vercel[⚡ Vercel Edge]
+    User[📱 Mobile User] -->|HTTPS| Vercel[⚡ Vercel Edge (Frontend)]
     subgraph "Secure Proxy Layer"
-        Vercel -->|Rewrite Rule| DO[🌊 DigitalOcean Droplet]
+        Vercel -->|Rewrite Rule| DO[🌊 DigitalOcean Droplet (Backend)]
     end
     
     subgraph "Backend Core (8GB RAM)"
@@ -28,11 +28,14 @@ graph LR
     end
 ```
 
-  * **Frontend:** React (Vite) hosted on **Vercel** for global edge caching.
-  * **Secure Proxy:** Vercel Rewrites tunnel API requests to the backend, solving Mixed Content (HTTPS/HTTP) issues without complex SSL setup.
-  * **Backend:** FastAPI hosted on a **DigitalOcean Droplet** (8GB RAM) to handle heavy dataframes and AI logic that exceeds serverless limits.
-  * **Data:** **Supabase** (PostgreSQL) with Connection Pooling (Port 6543) for high-concurrency writes.
+### Why this Architecture?
+We chose this hybrid approach to solve specific production challenges:
 
+1.  **Bypassing Serverless Limits:** The AI Agent processes large Pandas DataFrames and maintains conversation state. This workload often exceeds Vercel's 250MB memory limit and 10s timeout. A dedicated **8GB RAM Droplet** handles the heavy lifting.
+2.  **Secure Proxying:** We use **Vercel Rewrites** to tunnel `/api` requests to the Droplet. This solves "Mixed Content" (HTTPS Frontend vs HTTP Backend) issues without requiring complex SSL certificate management on the backend server.
+3.  **Reliable Data:** **Supabase** with Session Pooling (Port 6543) ensures the backend can handle high-concurrency requests without exhausting database connections.
+
+-----
 -----
 
 ## ❓ Problem Statement

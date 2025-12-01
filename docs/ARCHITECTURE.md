@@ -1,45 +1,78 @@
-# System Architecture
+# System Architecture & Deployment Strategy 🏗️
 
-## Overview
+This document details the **Hybrid Cloud Architecture** used in SariCoach to deliver a production-grade AI application.
 
-SariCoach is a dual-backend system designed to run both in offline Kaggle environments (CSV-based) and production environments (Supabase-based).
+## 1. The "Hybrid" Approach
 
-## Components
+We split the application into two distinct infrastructure layers:
 
-### 1. Data Layer
-- **CSV Mode**: Reads processed CSVs from `data/processed/`. Used for Kaggle submissions and local demos.
-- **Supabase Mode**: Connects to a Postgres database via `DATABASE_URL`. Used for production deployment.
+| Layer | Provider | Spec | Responsibility |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | **Vercel** | Edge Network | Hosting the React SPA, static assets, and handling SSL termination. |
+| **Backend** | **DigitalOcean** | Droplet (8GB RAM) | Hosting the FastAPI Python service, running the AI Agents, and processing DataFrames. |
+| **Database** | **Supabase** | Pro Plan | Managed PostgreSQL storage with `pgbouncer` for connection pooling. |
 
-### 2. Core Logic (`saricoach/`)
-- **DataContext**: Unified data interface abstracting the backend.
-- **Feature Frame**: Builds temporal features (sales, shelf vision, STT, weather) per store/brand.
-- **Agents**:
-    - `PlannerAgent`: Routes user intent to specific flows.
-    - `DataAnalystAgent`: Computes metrics and aggregates data.
-    - `CoachAgent`: Generates actionable insights and recommendations.
+### Why not all Serverless?
+AI Agents are stateful and memory-intensive. Loading a retail dataset into Pandas and generating context for an LLM often exceeds the **250MB Memory** and **10s Execution Time** limits of standard Serverless Functions (AWS Lambda / Vercel Functions).
 
-### 3. API Service (`service/`)
-- **FastAPI**: Provides REST endpoints for the frontend.
-- **Dependencies**: Injects the appropriate `DataContext` based on `SARICOACH_DATA_BACKEND`.
+By moving the "Brain" to a dedicated Droplet, we get:
+*   **Persistent Memory:** Agents can keep dataframes in RAM.
+*   **Long Timeouts:** Complex reasoning chains can take 30s+ without crashing.
+*   **Full Control:** We can install system-level dependencies (like `tesseract` or `ffmpeg` in the future).
 
-### 4. Frontend (`dashboard/`)
-- **React + Vite**: Mobile-first dashboard.
-- **Material 3**: Design system implementation.
-- **Playwright**: End-to-end testing.
+---
 
-## Diagram
+## 2. The Secure Proxy (Networking)
 
-```mermaid
-graph TD
-    CSV[CSV Files] -->|CSV Backend| CTX[DataContext]
-    DB[(Supabase PG)] -->|Supabase Backend| CTX
-    
-    CTX --> Analyst[Data Analyst Agent]
-    Analyst --> Coach[Coach Agent]
-    
-    User -->|API Request| Planner[Planner Agent]
-    Planner --> Analyst
-    
-    Coach -->|JSON Response| API[FastAPI Service]
-    API -->|HTTP| UI[React Dashboard]
+A major challenge in Hybrid apps is **Mixed Content**. The Frontend is HTTPS (Vercel), but the Backend Droplet is often HTTP (unless you manage certs). Browsers block HTTPS -> HTTP requests.
+
+**Solution: Vercel Rewrites**
+
+We use Vercel's edge network as a reverse proxy. The browser talks *only* to Vercel (HTTPS), and Vercel tunnels the request to our Droplet (HTTP) over the backbone network.
+
+**Configuration (`vercel.json`):**
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://188.166.237.231:8000/api/:path*"
+    }
+  ]
+}
 ```
+
+**Flow:**
+1.  User requests `https://saricoach.vercel.app/api/coach/ask`
+2.  Vercel accepts the request (Secure).
+3.  Vercel rewrites it to `http://188.166.237.231:8000/api/coach/ask`.
+4.  Droplet processes it and responds.
+5.  Vercel relays the response to the user.
+
+---
+
+## 3. Backend Infrastructure (DigitalOcean)
+
+The backend runs on a standard Ubuntu 22.04 Droplet.
+
+*   **IP:** `188.166.237.231`
+*   **Process Manager:** `nohup` (Simple background process)
+*   **Server:** `uvicorn` (ASGI)
+
+**Deployment Command:**
+```bash
+nohup uvicorn service.app.main:app --host 0.0.0.0 --port 8000 &
+```
+
+This keeps the API alive even after SSH disconnects.
+
+---
+
+## 4. Data Layer (Supabase)
+
+We use **Supabase** as a managed Postgres provider.
+
+*   **Connection Pooling:** Enabled (Port 6543). This is critical because Serverless frontends (or even our multi-worker FastAPI) can open too many direct connections.
+*   **Schema:** Defined in `supabase/schema/`.
+*   **Seeding:** We use `seed_saricoach_data.py` to generate synthetic retail data (Transactions, Shelf Vision, STT) and push it to the DB.
