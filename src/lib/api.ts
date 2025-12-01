@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// If we are on Vercel, the backend is relative (/api/...)
+// If we are local, we might need localhost:8000
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export async function fetchStoreSummary(storeId: number) {
     console.log("Fetching from:", `${API_URL}/api/store/${storeId}/summary`); // Debug log
