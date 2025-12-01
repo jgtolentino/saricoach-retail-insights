@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+.env.local
+.DS_Store
+venv/
+node_modules/
+dist/
+.idea/
+.vscode/
+data/raw/
+data/processed/
+!data/processed/.gitkeep
