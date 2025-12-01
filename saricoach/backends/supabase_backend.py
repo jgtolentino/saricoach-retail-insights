@@ -10,7 +10,11 @@ def build_context_from_supabase() -> DataContext:
     """
     db_url = os.environ.get("DATABASE_URL")
     if not db_url:
-        # Fallback: Construct from Vercel/Supabase individual vars
+        # Fallback 1: Check for Vercel/Supabase direct URL vars
+        db_url = os.environ.get("POSTGRES_URL_NON_POOLING") or os.environ.get("POSTGRES_URL")
+        
+    if not db_url:
+        # Fallback 2: Construct from Vercel/Supabase individual vars
         user = os.environ.get("POSTGRES_USER")
         password = os.environ.get("POSTGRES_PASSWORD")
         host = os.environ.get("POSTGRES_HOST")
