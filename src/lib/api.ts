@@ -1,6 +1,5 @@
-// If we are on Vercel, the backend is relative (/api/...)
-// If we are local, we might need localhost:8000
-const API_URL = import.meta.env.VITE_API_URL || "";
+// We use a relative path. Vercel will see "/api" and forward it to DigitalOcean.
+const API_URL = "";
 
 export async function fetchStoreSummary(storeId: number) {
     console.log("Fetching from:", `${API_URL}/api/store/${storeId}/summary`); // Debug log

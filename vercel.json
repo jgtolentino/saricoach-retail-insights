@@ -1,0 +1,17 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "http://188.166.237.231:8000/api/:path*"
+        }
+    ],
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist"
+            }
+        }
+    ]
+}
