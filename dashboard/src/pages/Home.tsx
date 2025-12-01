@@ -92,21 +92,6 @@ export const HomePage: React.FC = () => {
                 </section>
             </main>
 
-            {/* Bottom nav stub */}
-            <nav className="h-14 border-t border-[var(--color-surface)] flex items-center justify-around text-[10px]">
-                <button className="flex flex-col items-center text-[var(--color-primary)]">
-                    <span>Home</span>
-                </button>
-                <button className="flex flex-col items-center text-[var(--color-text-secondary)]">
-                    <span>Insights</span>
-                </button>
-                <button className="flex flex-col items-center text-[var(--color-text-secondary)]">
-                    <span>History</span>
-                </button>
-                <button className="flex flex-col items-center text-[var(--color-text-secondary)]">
-                    <span>Settings</span>
-                </button>
-            </nav>
         </div>
     );
 };

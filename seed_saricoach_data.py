@@ -622,15 +622,18 @@ def main():
         sql_path.unlink()
     print(f"[*] Exporting Postgres INSERTs to {sql_path}...")
 
-    export_sql_insert("sc_brands", brands_df, sql_path)
-    export_sql_insert("sc_products", products_df, sql_path)
-    export_sql_insert("sc_stores", stores_df, sql_path)
-    export_sql_insert("sc_transactions", transactions_df, sql_path)
-    export_sql_insert("sc_transaction_lines", transaction_lines_df, sql_path)
-    export_sql_insert("sc_shelf_vision_events", shelf_vision_df, sql_path)
-    export_sql_insert("sc_stt_events", stt_df, sql_path)
-    export_sql_insert("sc_weather_daily", weather_df, sql_path)
-    export_sql_insert("sc_foot_traffic_daily", traffic_df, sql_path)
+    with sql_path.open("w", encoding="utf-8") as f:
+        f.write("CREATE SCHEMA IF NOT EXISTS kaggle;\n\n")
+
+    export_sql_insert("kaggle.brands", brands_df, sql_path)
+    export_sql_insert("kaggle.products", products_df, sql_path)
+    export_sql_insert("kaggle.stores", stores_df, sql_path)
+    export_sql_insert("kaggle.transactions", transactions_df, sql_path)
+    export_sql_insert("kaggle.transaction_lines", transaction_lines_df, sql_path)
+    export_sql_insert("kaggle.shelf_vision_events", shelf_vision_df, sql_path)
+    export_sql_insert("kaggle.stt_events", stt_df, sql_path)
+    export_sql_insert("kaggle.weather_daily", weather_df, sql_path)
+    export_sql_insert("kaggle.foot_traffic_daily", traffic_df, sql_path)
 
     print("[✓] SariCoach seed data generation complete.")
 
