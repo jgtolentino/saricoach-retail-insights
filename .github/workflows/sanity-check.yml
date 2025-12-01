@@ -2,43 +2,46 @@ name: Sanity Check
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     
     steps:
-    # 1. Check out code
     - uses: actions/checkout@v3
 
-    # 2. Setup Python (Backend)
+    # Setup Python (Backend)
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
 
-    # 3. Install Backend Deps
-    - name: Install Dependencies
+    # Install Backend Deps
+    - name: Install Backend Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r service/requirements.txt
 
-    # 4. Mock .env for Testing (Crucial!)
-    # We create a fake .env so the code doesn't crash on import
-    # We do NOT put real keys here (security risk)
-    - name: Create Mock Env
-      run: |
-        echo "SARICOACH_DATA_BACKEND=csv" >> service/.env
-        echo "DATABASE_URL=postgresql://mock:mock@localhost:5432/mock" >> service/.env
-        echo "SARICOACH_GOOGLE_API_KEY=mock_key" >> service/.env
-
-    # 5. Run a "Dry Run" Test
-    # Create a simple test that just checks if imports work and app initializes
-    - name: Verify Backend Starts
+    # Verify Backend Starts (Smoke Test)
+    - name: Verify Backend Imports
       run: |
         cd service
-        # This python one-liner checks if main.py compiles without error
-        python -c "from app.main import app; print('✅ App initialized successfully')"
+        # Mock env vars so it doesn't crash
+        export SARICOACH_DATA_BACKEND=csv
+        export SARICOACH_GOOGLE_API_KEY=mock_key
+        python -c "from app.main import app; print('✅ Backend compiled successfully')"
+
+    # Setup Node (Frontend)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    # Verify Frontend Builds
+    - name: Verify Frontend Build
+      run: |
+        npm install
+        npm run build
