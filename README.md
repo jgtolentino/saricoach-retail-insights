@@ -34,6 +34,76 @@ graph LR
 
 -----
 
+## ❓ Problem Statement
+
+Sari-sari stores are the last mile of FMCG distribution in the Philippines, but they still run on gut feel and paper notebooks. They face three structural problems:
+
+1) **No analytics.** They have transaction history but no way to see patterns like peak hours, bestsellers, or stock-outs.
+2) **No affordable ERP.** Enterprise-grade ERPs and BI dashboards are too complex and expensive for tiny shops.
+3) **No time to be an analyst.** Owners are on their feet all day; they need direct “do this next” guidance, not dashboards.
+
+SariCoach delivers enterprise-grade intelligence on a single mobile screen through a conversational coach, using the same data models a big retailer would use.
+
+## 🤝 Why Agents
+
+A static dashboard is not enough for this audience:
+
+* Store owners cannot explore dozens of charts and translate them into actions while running their shop.
+* Data sources are multimodal: structured sales, synthetic shelf-vision events, STT transcripts, weather, and foot traffic. A single prompt/response model becomes brittle.
+
+Agents solve this by splitting responsibilities:
+
+* **PlannerAgent** interprets the goal (analyze store, explain brand, 7-day plan) and decides what data/tools to call.
+* **DataAnalystAgent** builds a unified feature frame per store/brand/day from transactions, shelf events, STT events, weather, and traffic.
+* **CoachAgent** (Gemini) converts those metrics into 3–7 prioritized, human-readable actions, risks, and opportunities.
+
+This mirrors how a consulting team would work (analyst → strategist → coach) and aligns with the project’s tool-calling/orchestration focus.
+
+## 🏗️ What We Built (Live submission + optional offline)
+
+The **judged submission is the live deployment** that you can open right now. An offline/Kaggle path exists purely for reproducibility and mirrors the live schema, but is not the primary deliverable.
+
+* **Live backend + mobile dashboard (production-style mode):**
+  * **Backend:** FastAPI service (`service/`) deployed to the DigitalOcean droplet at `188.166.237.231:8000`, fronted by Vercel rewrites (`vercel.json`).
+  * **Data backends (switchable):** `CSVBackend` reads `data/processed/*.csv` (offline/Kaggle), while `SupabaseBackend` reads the managed Postgres database seeded via `supabase/seed/seed_saricoach.sql`. Runtime selection is controlled by `SARICOACH_DATA_BACKEND=csv|supabase`.
+  * **Agentic layer:** Inside the service, the Planner/DataAnalyst/Coach agents use Gemini (Google AI SDK). Before each call, the Planner fetches KPIs and feature vectors and injects them into the Coach’s context (RAG-style).
+  * **Frontend:** Mobile-first React + Vite + shadcn UI in `dashboard/`, deployed on Vercel at https://agents-intensive-saricoach.vercel.app with API requests proxied to the droplet.
+
+* **Kaggle / Offline mode (for reproducibility):**
+  * `seed_saricoach_data.py` turns Kaggle-style retail CSVs into canonical multimodal tables under `data/processed/` (brands, products, stores, transactions, shelf events, STT events, weather, foot traffic).
+  * `01_demo_saricoach.ipynb` loads these tables, builds the feature frame, runs the multi-agent loop on sample stores, and reports “actionability” and “groundedness” scores on synthetic scenarios.
+
+## 🎬 Demo Experience
+
+* **Notebook demo (offline/judging-friendly):** Runs the seed script or uses `data/processed/`, does quick EDA, executes the Planner → DataAnalyst → Coach loop on a sample store, and prints a compact 7-day action plan. The evaluation harness scores actionability and groundedness on synthetic scenarios.
+* **Live API + dashboard:** The home tab shows KPIs and a volume trend for the current store. An error state appears if the API is down or Supabase isn’t reachable. “Ask SariCoach” triggers the CoachAgent to fetch metrics from Supabase, call Gemini with those metrics embedded, and return grounded recommendations (e.g., “You risk a stockout on Brand X in 2 days; increase order quantity by 30% and move it to eye level.”).
+
+## 🏗️ Build Notes
+
+Key course concepts applied:
+
+* **Multi-agent orchestration:** PlannerAgent → DataAnalystAgent → CoachAgent loop.
+* **Tool-calling & context engineering:** DataAnalystAgent calls data backends only; CoachAgent uses structured KPI/feature context to keep outputs grounded.
+* **Evaluation & safety:** `scenarios_eval.jsonl` powers an evaluation harness; the notebook includes safety notes (no PII, no financial guarantees, “you are the decision-maker”).
+
+Tech stack:
+
+* **Language:** Python (FastAPI, Pandas, Pydantic), TypeScript (React/Vite).
+* **Models:** Google Gemini via the official Google AI SDK.
+* **Data:** Supabase (PostgreSQL) + CSV fallback.
+* **Infra:** Frontend on Vercel with rewrite proxy to the droplet backend; backend on a DigitalOcean droplet sized for dataframe workloads.
+
+## ➡️ If We Had More Time
+
+Future enhancements (not yet implemented in this deployment):
+
+* On-device “nano” mode for offline/basic recommendations on low-cost Android devices.
+* Replace synthetic shelf vision and STT with lightweight detection and Whisper-style pipelines tuned for Filipino/Taglish.
+* Reward learning from outcomes to refine the CoachAgent prompt and heuristics based on which recommendations are followed.
+* Tighter Odoo 18 CE / OCA integration so stores can graduate into full ERP while keeping the same AI coach.
+
+-----
+
 ## 🚀 Key Features
 
   * **📊 Real-Time Dashboard:** "Square-style" visualization of revenue, volume, and traffic trends.
