@@ -4,10 +4,13 @@ from .routers import store, coach
 
 app = FastAPI(title="SariCoach API")
 
-import os
-
-# Allow frontend to talk to backend
-origins = os.getenv("SARICOACH_CORS_ORIGINS", "*").split(",")
+# CRITICAL: Allow your Vercel frontend to talk to this backend
+origins = [
+    "https://agents-intensive-saricoach.vercel.app",
+    "https://saricoach-retail-insights.vercel.app",
+    "http://localhost:5173",
+    "*" # Temporarily allow all for debugging
+]
 
 app.add_middleware(
     CORSMiddleware,
