@@ -81,7 +81,7 @@ class SupabaseBackend(DataBackend):
                     
                     def calc_delta(curr, prev):
                         if not prev or prev == 0: return 0.0
-                        return ((curr - prev) / prev) * 100.0
+                        return ((float(curr) - float(prev)) / float(prev)) * 100.0
 
                     d_vol = calc_delta(curr_vol, prev_vol)
                     d_rev = calc_delta(curr_rev, prev_rev)
