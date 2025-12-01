@@ -71,6 +71,15 @@ npm run dev
 # Frontend is now live at localhost:5173
 ```
 
+**4. Refresh today's demo data in Supabase**
+
+If the home dashboard shows zeros, run the helper script to inject fresh data for
+today (uses `SARICOACH_DATABASE_URL` from `service/.env`).
+
+```bash
+python reset_demo_data.py
+```
+
 -----
 
 ## 🔧 Troubleshooting & Diagnostics
