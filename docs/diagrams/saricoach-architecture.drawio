@@ -1,0 +1,304 @@
+<mxfile host="app.diagrams.net" modified="2025-12-02T00:00:00.000Z" agent="Claude" version="24.7.17" type="device">
+  <!-- 
+    STYLE REFERENCE: Azure Architecture Center (vendor-neutral adaptation)
+    - Subtle gradient zone backgrounds
+    - Clean monochrome icons
+    - Professional muted color palette
+    - Thin connection lines with clear labels
+    
+    To add icons: More Shapes → General, Clipart, or import from:
+    https://app.diagrams.net/?clibs=Uhttps://jgraph.github.io/drawio-libs/libs/material.xml
+  -->
+  <diagram id="saricoach-pro" name="SariCoach Architecture">
+    <mxGraphModel dx="1434" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- ==================== ZONE BACKGROUNDS (Subtle Gradients) ==================== -->
+        
+        <!-- Client Zone Background -->
+        <mxCell id="bg-client" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F4FD;strokeColor=#B8D4E8;strokeWidth=1;opacity=60;glass=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="140" height="320" as="geometry"/>
+        </mxCell>
+        
+        <!-- Frontend Zone Background -->
+        <mxCell id="bg-frontend" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0F0F0;strokeColor=#D0D0D0;strokeWidth=1;opacity=60;glass=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="80" width="180" height="320" as="geometry"/>
+        </mxCell>
+        
+        <!-- Backend Zone Background -->
+        <mxCell id="bg-backend" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FF;strokeColor=#B8C8E8;strokeWidth=1;opacity=60;glass=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="80" width="200" height="320" as="geometry"/>
+        </mxCell>
+        
+        <!-- Data Zone Background -->
+        <mxCell id="bg-data" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F8F0;strokeColor=#B8E0C8;strokeWidth=1;opacity=60;glass=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="80" width="160" height="200" as="geometry"/>
+        </mxCell>
+        
+        <!-- AI Zone Background -->
+        <mxCell id="bg-ai" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F4F0FF;strokeColor=#D0C8E8;strokeWidth=1;opacity=60;glass=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="300" width="160" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== ZONE LABELS (Top, Outside) ==================== -->
+        
+        <mxCell id="label-client" value="Client" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#5A6A7A;" vertex="1" parent="1">
+          <mxGeometry x="40" y="55" width="140" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="label-frontend" value="Frontend (Edge)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#5A6A7A;" vertex="1" parent="1">
+          <mxGeometry x="220" y="55" width="180" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="label-backend" value="Application" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#5A6A7A;" vertex="1" parent="1">
+          <mxGeometry x="440" y="55" width="200" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="label-data" value="Data" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#5A6A7A;" vertex="1" parent="1">
+          <mxGeometry x="680" y="55" width="160" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="label-ai" value="AI Services" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#5A6A7A;" vertex="1" parent="1">
+          <mxGeometry x="680" y="275" width="160" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== CLIENT COMPONENTS ==================== -->
+        
+        <!-- User Icon (simple silhouette) -->
+        <mxCell id="user" value="" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#7A8A9A;strokeColor=#5A6A7A;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="85" y="120" width="50" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="user-label" value="Store Owner" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#4A5A6A;" vertex="1" parent="1">
+          <mxGeometry x="60" y="195" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Device icons (small, subtle) -->
+        <mxCell id="device-mobile" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#A0A0A0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="230" width="30" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="device-browser" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#A0A0A0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="115" y="240" width="50" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="device-label" value="Mobile / Browser" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#6A7A8A;" vertex="1" parent="1">
+          <mxGeometry x="55" y="290" width="110" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== FRONTEND COMPONENTS ==================== -->
+        
+        <!-- React SPA -->
+        <mxCell id="spa" value="React SPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#808080;strokeWidth=1;fontSize=10;fontStyle=0;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="250" y="130" width="120" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="spa-sub" value="Vite + TypeScript" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="250" y="175" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- API Proxy -->
+        <mxCell id="proxy" value="Rewrite Proxy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#808080;strokeWidth=1;fontSize=10;fontStyle=0;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="250" y="220" width="120" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="proxy-sub" value="/api/* → Backend" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="250" y="265" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- Vercel Badge (subtle) -->
+        <mxCell id="vercel-badge" value="▲ Vercel" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#A0A0A0;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="250" y="370" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== BACKEND COMPONENTS ==================== -->
+        
+        <!-- FastAPI Server -->
+        <mxCell id="api" value="FastAPI Server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5080C0;strokeWidth=1.5;fontSize=10;fontStyle=0;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="480" y="130" width="120" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="api-sub" value="Port 8000" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="480" y="175" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent Orchestration -->
+        <mxCell id="agents" value="Agent Orchestration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5080C0;strokeWidth=1.5;fontSize=10;fontStyle=0;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="480" y="220" width="120" height="45" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent Pipeline (horizontal flow) -->
+        <mxCell id="agent-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8F8FF;strokeColor=#C0C8D8;strokeWidth=1;strokeDasharray=3 3;" vertex="1" parent="1">
+          <mxGeometry x="460" y="285" width="160" height="90" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="agent-planner" value="Planner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FF;strokeColor=#A0B0D0;strokeWidth=1;fontSize=8;fontColor=#506080;" vertex="1" parent="1">
+          <mxGeometry x="470" y="300" width="40" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="agent-analyst" value="Analyst" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FF;strokeColor=#A0B0D0;strokeWidth=1;fontSize=8;fontColor=#506080;" vertex="1" parent="1">
+          <mxGeometry x="520" y="300" width="40" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="agent-coach" value="Coach" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FF;strokeColor=#A0B0D0;strokeWidth=1;fontSize=8;fontColor=#506080;" vertex="1" parent="1">
+          <mxGeometry x="570" y="300" width="40" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent arrows -->
+        <mxCell id="agent-flow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#A0B0C0;endArrow=blockThin;endFill=1;endSize=4;" edge="1" parent="1" source="agent-planner" target="agent-analyst">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="agent-flow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#A0B0C0;endArrow=blockThin;endFill=1;endSize=4;" edge="1" parent="1" source="agent-analyst" target="agent-coach">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="agent-pipeline-label" value="Multi-Agent Pipeline" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="340" width="140" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- DigitalOcean Badge (subtle) -->
+        <mxCell id="do-badge" value="DigitalOcean Droplet" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#A0A0A0;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="385" width="130" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== DATA COMPONENTS ==================== -->
+        
+        <!-- PostgreSQL Database -->
+        <mxCell id="db" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#FFFFFF;strokeColor=#50A080;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="720" y="120" width="80" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="db-label" value="PostgreSQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="700" y="195" width="120" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="db-sub" value="Pooler Port 6543" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="700" y="210" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- Supabase Badge (subtle) -->
+        <mxCell id="supa-badge" value="Supabase" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#A0A0A0;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="720" y="250" width="80" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== AI COMPONENTS ==================== -->
+        
+        <!-- Gemini LLM -->
+        <mxCell id="llm" value="LLM" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9080C0;strokeWidth=1.5;fontSize=10;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="720" y="320" width="80" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="llm-label" value="Gemini 1.5 Flash" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="700" y="375" width="120" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== CONNECTION FLOWS ==================== -->
+        
+        <!-- User → SPA -->
+        <mxCell id="flow-user-spa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#606060;endArrow=blockThin;endFill=1;endSize=5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="device-browser" target="spa">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="257" as="sourcePoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="flow-user-spa-label" value="HTTPS" style="edgeLabel;html=1;align=center;verticalAlign=middle;fontSize=8;fontColor=#606060;" vertex="1" connectable="0" parent="flow-user-spa">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- SPA → Proxy (internal) -->
+        <mxCell id="flow-spa-proxy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#A0A0A0;endArrow=blockThin;endFill=1;endSize=4;dashed=0;" edge="1" parent="1" source="spa" target="proxy">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Proxy → API -->
+        <mxCell id="flow-proxy-api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#5080C0;endArrow=blockThin;endFill=1;endSize=5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="proxy" target="api">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow-proxy-api-label" value="HTTP" style="edgeLabel;html=1;align=center;verticalAlign=middle;fontSize=8;fontColor=#5080C0;" vertex="1" connectable="0" parent="flow-proxy-api">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- API → Agents -->
+        <mxCell id="flow-api-agents" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#808080;endArrow=blockThin;endFill=1;endSize=4;" edge="1" parent="1" source="api" target="agents">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- API ↔ Database -->
+        <mxCell id="flow-api-db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#50A080;endArrow=blockThin;endFill=1;startArrow=blockThin;startFill=1;endSize=5;startSize=5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="api" target="db">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow-api-db-label" value="SQL" style="edgeLabel;html=1;align=center;verticalAlign=middle;fontSize=8;fontColor=#50A080;" vertex="1" connectable="0" parent="flow-api-db">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Agents ↔ LLM -->
+        <mxCell id="flow-agents-llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#9080C0;endArrow=blockThin;endFill=1;startArrow=blockThin;startFill=1;endSize=5;startSize=5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="agent-coach" target="llm">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="313"/>
+              <mxPoint x="650" y="345"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="flow-agents-llm-label" value="Inference" style="edgeLabel;html=1;align=center;verticalAlign=middle;fontSize=8;fontColor=#9080C0;" vertex="1" connectable="0" parent="flow-agents-llm">
+          <mxGeometry x="0.2" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ==================== TITLE ==================== -->
+        
+        <mxCell id="title" value="SariCoach Hybrid Cloud Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="320" y="440" width="300" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="subtitle" value="Multi-agent retail coaching platform" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#808080;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="340" y="465" width="260" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== LEGEND ==================== -->
+        
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#E0E0E0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="80" width="140" height="180" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend-title" value="Legend" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="895" y="90" width="60" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Legend items -->
+        <mxCell id="leg1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F4FD;strokeColor=#B8D4E8;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="895" y="120" width="20" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg1-t" value="Client" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#606060;" vertex="1" parent="1">
+          <mxGeometry x="920" y="115" width="90" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0F0F0;strokeColor=#D0D0D0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="895" y="145" width="20" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg2-t" value="Edge (Vercel)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#606060;" vertex="1" parent="1">
+          <mxGeometry x="920" y="140" width="90" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg3" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FF;strokeColor=#B8C8E8;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="895" y="170" width="20" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg3-t" value="Compute (DO)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#606060;" vertex="1" parent="1">
+          <mxGeometry x="920" y="165" width="90" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg4" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F8F0;strokeColor=#B8E0C8;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="895" y="195" width="20" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg4-t" value="Data (Supabase)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#606060;" vertex="1" parent="1">
+          <mxGeometry x="920" y="190" width="90" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg5" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F4F0FF;strokeColor=#D0C8E8;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="895" y="220" width="20" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg5-t" value="AI (Google)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#606060;" vertex="1" parent="1">
+          <mxGeometry x="920" y="215" width="90" height="20" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

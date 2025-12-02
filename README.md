@@ -4,7 +4,7 @@
 [![Status](https://img.shields.io/badge/status-production-blue.svg)](https://saricoach-retail-insights.vercel.app)
 [![Sanity Check](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml/badge.svg)](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml)
 
-> **Winner/Submission for [Hackathon Name]**
+> **Submission for Google AI Agents Intensive Capstone**
 >
 > SariCoach is a "Pocket Intelligence" layer for Sari-Sari stores (micro-retailers). It transforms raw transaction data into actionable, plain-English advice using multimodal AI agents.
 
@@ -14,47 +14,18 @@
 
 SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge with the power of a dedicated backend.
 
-```mermaid
-graph LR
-    %% Brand Styling
-    classDef user fill:#FCA5A5,stroke:#333,stroke-width:2px;
-    classDef vercel fill:#000000,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef do fill:#0080FF,stroke:#333,stroke-width:2px,color:#fff;
-    classDef db fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#fff;
-    classDef ai fill:#8E75B2,stroke:#333,stroke-width:2px,color:#fff;
-    classDef connection stroke:#666,stroke-width:2px;
+### High-Level Architecture
 
-    %% Actors
-    User((👤 Store Owner)):::user
+![SariCoach Architecture](docs/diagrams/saricoach-architecture.png)
 
-    %% Vercel Environment
-    subgraph Vercel [⚡ Vercel (Edge Network)]
-        direction TB
-        Frontend[📱 React / Vite SPA]:::vercel
-        Proxy[🛡️ Rewrite Proxy<br/>(vercel.json)]:::vercel
-    end
+SariCoach runs as a hybrid deployment:
 
-    %% DigitalOcean Environment
-    subgraph DigitalOcean [🌊 DigitalOcean Droplet]
-        direction TB
-        Backend[⚙️ FastAPI Server<br/>(Port 8000)]:::do
-        Agent[🤖 Agent Logic<br/>(RAG & Context)]:::do
-    end
-
-    %% External Services
-    subgraph Services [☁️ Managed Services]
-        Supabase[("🗄️ Supabase<br/>(Postgres)")]:::db
-        Gemini(("✨ Google Gemini<br/>(1.5 Flash)")):::ai
-    end
-
-    %% Flows
-    User ==>|HTTPS| Frontend
-    Frontend ==>|/api| Proxy
-    Proxy -.->|HTTP Tunnel| Backend
-    Backend <-->|SQL| Supabase
-    Backend --o|Prompt| Agent
-    Agent <-->|Inference| Gemini
-```
+- **Client:** Store owner on mobile or browser
+- **Frontend:** React / Vite SPA on Vercel (edge-cached, mobile-first)
+- **Proxy:** Vercel rewrites `/api/*` to the backend to avoid mixed-content issues
+- **Backend:** FastAPI on a DigitalOcean droplet (agent logic + data aggregation)
+- **Data Layer:** Supabase Postgres (seeded via `seed_saricoach.sql` / `apply_db_setup.py`)
+- **AI Layer:** Gemini 1.5 Flash powering the CoachAgent, using a structured KPI/context payload
 
 ### Why this Architecture?
 We chose this hybrid approach to solve specific production challenges:
