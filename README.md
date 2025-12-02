@@ -201,7 +201,9 @@ saricoach/
 
 ## 🎥 Demo Video
 
-[**▶️ Watch the Demo Video**](docs/saricoach_demo.mp4)
+[![SariCoach Demo](docs/saricoach_demo.gif)](docs/saricoach_demo.mp4)
+
+*(Click the GIF to watch with sound)*
 
 -----
 
