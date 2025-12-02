@@ -1,12 +1,12 @@
-# SarICoach: RetaIl AI Agent for MIcro-EnterprIses 🏪
+# SariCoach: Retail AI Agent for Micro-Enterprises 🏪
 
-[![LIve Demo](https://Img.shIelds.Io/badge/demo-onlIne-green.svg)](https://sarIcoach-retaIl-InsIghts.vercel.app)
-[![Status](https://Img.shIelds.Io/badge/status-productIon-blue.svg)](https://sarIcoach-retaIl-InsIghts.vercel.app)
-[![SanIty Check](https://gIthub.com/jgtolentIno/sarIcoach-retaIl-InsIghts/actIons/workflows/sanIty-check.yml/badge.svg)](https://gIthub.com/jgtolentIno/sarIcoach-retaIl-InsIghts/actIons/workflows/sanIty-check.yml)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://saricoach-retail-insights.vercel.app)
+[![Status](https://img.shields.io/badge/status-production-blue.svg)](https://saricoach-retail-insights.vercel.app)
+[![Sanity Check](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml/badge.svg)](https://github.com/jgtolentino/saricoach-retail-insights/actions/workflows/sanity-check.yml)
 
-> **SubmIssIon for Google AI Agents IntensIve Capstone**
+> **Submission for Google AI Agents Intensive Capstone**
 >
-> SarICoach Is a "Pocket IntellIgence" layer for SarI-SarI stores (mIcro-retaIlers). It transforms raw transactIon data Into actIonable, plaIn-EnglIsh advIce usIng multImodal AI agents.
+> SariCoach is a "Pocket Intelligence" layer for Sari-Sari stores (micro-retailers). It transforms raw transaction data into actionable, plain-English advice using multimodal AI agents.
 
 -----
 
