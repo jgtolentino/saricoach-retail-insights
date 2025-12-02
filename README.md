@@ -70,7 +70,7 @@ The **judged submission is the live deployment** that you can open right now. An
   * **Backend:** FastAPI service (`service/`) deployed to the DigitalOcean droplet at `188.166.237.231:8000`, fronted by Vercel rewrites (`vercel.json`).
   * **Data backends (switchable):** `CSVBackend` reads `data/processed/*.csv` (offline/Kaggle), while `SupabaseBackend` reads the managed Postgres database seeded via `supabase/seed/seed_saricoach.sql`. Runtime selection is controlled by `SARICOACH_DATA_BACKEND=csv|supabase`.
   * **Agentic layer:** Inside the service, the Planner/DataAnalyst/Coach agents use Gemini (Google AI SDK). Before each call, the Planner fetches KPIs and feature vectors and injects them into the Coach’s context (RAG-style).
-  * **Frontend:** Mobile-first React + Vite + shadcn UI in `dashboard/`, deployed on Vercel at https://agents-intensive-saricoach.vercel.app with API requests proxied to the droplet.
+  * **Frontend:** Mobile-first React + Vite + shadcn UI in `dashboard/`, deployed on Vercel at https://saricoach-retail-insights.vercel.app/ with API requests proxied to the droplet.
 
 * **Kaggle / Offline mode (for reproducibility):**
   * `seed_saricoach_data.py` turns Kaggle-style retail CSVs into canonical multimodal tables under `data/processed/` (brands, products, stores, transactions, shelf events, STT events, weather, foot traffic).
