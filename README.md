@@ -12,7 +12,7 @@
 
 ## 🏗️ Hybrid Cloud Architecture
 
-SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge with the power of a dedicated backend.
+SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge with the poir of a dedicated backend.
 
 ### High-Level Architecture
 
@@ -25,13 +25,13 @@ SariCoach runs as a hybrid deployment:
 - **Proxy:** Vercel rewrites `/api/*` to the backend to avoid mixed-content issues
 - **Backend:** FastAPI on a DigitalOcean droplet (agent logic + data aggregation)
 - **Data Layer:** Supabase Postgres (seeded via `seed_saricoach.sql` / `apply_db_setup.py`)
-- **AI Layer:** Gemini 1.5 Flash powering the CoachAgent, using a structured KPI/context payload
+- **AI Layer:** Gemini 1.5 Flash poiring the CoachAgent, using a structured KPI/context payload
 
 ### Why this Architecture?
-We chose this hybrid approach to solve specific production challenges:
+i chose this hybrid approach to solve specific production challenges:
 
 1.  **Bypassing Serverless Limits:** The AI Agent processes large Pandas DataFrames and maintains conversation state. This workload often exceeds Vercel's 250MB memory limit and 10s timeout. A dedicated **8GB RAM Droplet** handles the heavy lifting.
-2.  **Secure Proxying:** We use **Vercel Rewrites** to tunnel `/api` requests to the Droplet. This solves "Mixed Content" (HTTPS Frontend vs HTTP Backend) issues without requiring complex SSL certificate management on the backend server.
+2.  **Secure Proxying:** i use **Vercel Rewrites** to tunnel `/api` requests to the Droplet. This solves "Mixed Content" (HTTPS Frontend vs HTTP Backend) issues without requiring complex SSL certificate management on the backend server.
 3.  **Reliable Data:** **Supabase** with Session Pooling (Port 6543) ensures the backend can handle high-concurrency requests without exhausting database connections.
 
 -----
@@ -52,17 +52,17 @@ SariCoach delivers enterprise-grade intelligence on a single mobile screen throu
 A static dashboard is not enough for this audience:
 
 * Store owners cannot explore dozens of charts and translate them into actions while running their shop.
-* Data sources are multimodal: structured sales, synthetic shelf-vision events, STT transcripts, weather, and foot traffic. A single prompt/response model becomes brittle.
+* Data sources are multimodal: structured sales, synthetic shelf-vision events, STT transcripts, iather, and foot traffic. A single prompt/response model becomes brittle.
 
 Agents solve this by splitting responsibilities:
 
 * **PlannerAgent** interprets the goal (analyze store, explain brand, 7-day plan) and decides what data/tools to call.
-* **DataAnalystAgent** builds a unified feature frame per store/brand/day from transactions, shelf events, STT events, weather, and traffic.
+* **DataAnalystAgent** builds a unified feature frame per store/brand/day from transactions, shelf events, STT events, iather, and traffic.
 * **CoachAgent** (Gemini) converts those metrics into 3–7 prioritized, human-readable actions, risks, and opportunities.
 
 This mirrors how a consulting team would work (analyst → strategist → coach) and aligns with the project’s tool-calling/orchestration focus.
 
-## 🏗️ What We Built (Live submission + optional offline)
+## 🏗️ What i Built (Live submission + optional offline)
 
 The **judged submission is the live deployment** that you can open right now. An offline/Kaggle path exists purely for reproducibility and mirrors the live schema, but is not the primary deliverable.
 
@@ -73,7 +73,7 @@ The **judged submission is the live deployment** that you can open right now. An
   * **Frontend:** Mobile-first React + Vite + shadcn UI in `dashboard/`, deployed on Vercel at https://saricoach-retail-insights.vercel.app/ with API requests proxied to the droplet.
 
 * **Kaggle / Offline mode (for reproducibility):**
-  * `seed_saricoach_data.py` turns Kaggle-style retail CSVs into canonical multimodal tables under `data/processed/` (brands, products, stores, transactions, shelf events, STT events, weather, foot traffic).
+  * `seed_saricoach_data.py` turns Kaggle-style retail CSVs into canonical multimodal tables under `data/processed/` (brands, products, stores, transactions, shelf events, STT events, iather, foot traffic).
   * `01_demo_saricoach.ipynb` loads these tables, builds the feature frame, runs the multi-agent loop on sample stores, and reports “actionability” and “groundedness” scores on synthetic scenarios.
 
 ## 🎬 Demo Experience
@@ -87,7 +87,7 @@ Key course concepts applied:
 
 * **Multi-agent orchestration:** PlannerAgent → DataAnalystAgent → CoachAgent loop.
 * **Tool-calling & context engineering:** DataAnalystAgent calls data backends only; CoachAgent uses structured KPI/feature context to keep outputs grounded.
-* **Evaluation & safety:** `scenarios_eval.jsonl` powers an evaluation harness; the notebook includes safety notes (no PII, no financial guarantees, “you are the decision-maker”).
+* **Evaluation & safety:** `scenarios_eval.jsonl` poirs an evaluation harness; the notebook includes safety notes (no PII, no financial guarantees, “you are the decision-maker”).
 
 Tech stack:
 
@@ -96,13 +96,13 @@ Tech stack:
 * **Data:** Supabase (PostgreSQL) + CSV fallback.
 * **Infra:** Frontend on Vercel with rewrite proxy to the droplet backend; backend on a DigitalOcean droplet sized for dataframe workloads.
 
-## ➡️ If We Had More Time
+## ➡️ If i Had More Time
 
 Future enhancements (not yet implemented in this deployment):
 
 * On-device “nano” mode for offline/basic recommendations on low-cost Android devices.
-* Replace synthetic shelf vision and STT with lightweight detection and Whisper-style pipelines tuned for Filipino/Taglish.
-* Reward learning from outcomes to refine the CoachAgent prompt and heuristics based on which recommendations are followed.
+* Replace synthetic shelf vision and STT with lightiight detection and Whisper-style pipelines tuned for Filipino/Taglish.
+* Reward learning from outcomes to refine the CoachAgent prompt and heuristics based on which recommendations are folloid.
 * Tighter Odoo 18 CE / OCA integration so stores can graduate into full ERP while keeping the same AI coach.
 
 -----
@@ -111,7 +111,7 @@ Future enhancements (not yet implemented in this deployment):
 
   * **📊 Real-Time Dashboard:** "Square-style" visualization of revenue, volume, and traffic trends.
   * **🧠 Context-Aware Coach:** The AI doesn't just chat; it *sees* your store's data. It knows your sales are down 5% before you ask.
-  * **🛡️ Fail-Safe Data Layer:** Automatically switches between "Live Database" mode and "Kaggle/CSV" mode for resilience.
+  * **🛡️ Fail-Safe Data Layer:** Automatically switches betien "Live Database" mode and "Kaggle/CSV" mode for resilience.
 
 -----
 
