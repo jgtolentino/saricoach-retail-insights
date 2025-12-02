@@ -199,8 +199,8 @@ sarIcoach/
 
 -----
 
-## 🎥 Demo VIdeo
+## 🎥 Demo Video
 
-[![SarICoach Demo](docs/sarIcoach_demo.gIf)](docs/sarIcoach_demo.mp4)
+[![SariCoach Demo](docs/saricoach_demo.gif)](docs/saricoach_demo.mp4)
 
-*(ClIck the GIF to watch wIth sound)*
+*(Click the GIF to watch with sound)*
