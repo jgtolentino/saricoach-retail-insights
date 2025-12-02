@@ -1,12 +1,16 @@
 import google.generativeai as genai
-from service.app.config import settings
+import os
+from dotenv import load_dotenv
 
-genai.configure(api_key=settings.google_api_key)
+load_dotenv("service/.env")
+api_key = os.getenv("SARICOACH_GOOGLE_API_KEY")
+genai.configure(api_key=api_key)
 
-print("Listing available models...")
+print(f"Key: {api_key[:5]}...")
+
 try:
     for m in genai.list_models():
         if 'generateContent' in m.supported_generation_methods:
             print(m.name)
 except Exception as e:
-    print(f"Error listing models: {e}")
+    print(f"Error: {e}")
