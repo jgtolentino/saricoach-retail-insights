@@ -201,7 +201,7 @@ saricoach/
 
 ## 🎥 Demo Video
 
-[Click here to watch the walkthrough](https://www.google.com/search?q=%5BYOUR_YOUTUBE_LINK%5D)
+[**▶️ Watch the Demo Video**](docs/saricoach_demo.mp4)
 
 -----
 

@@ -10,6 +10,26 @@ export function CoachChat() {
     const [response, setResponse] = useState<string | null>(null);
     const [isThinking, setIsThinking] = useState(false);
 
+    // NEW: Text-to-Speech Function
+    const speakResponse = (text: string) => {
+        if (!window.speechSynthesis) return;
+
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        // Optional: Select a voice (try to find a female/Google voice)
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes("Google") || v.name.includes("Female"));
+        if (preferredVoice) utterance.voice = preferredVoice;
+
+        utterance.rate = 1.1; // Slightly faster
+        utterance.pitch = 1.0;
+
+        window.speechSynthesis.speak(utterance);
+    };
+
     const handleAsk = async () => {
         if (!input.trim()) return;
 
@@ -27,6 +47,10 @@ export function CoachChat() {
 
             const data = await res.json();
             setResponse(data.answer);
+
+            // 🗣️ Trigger Speech here!
+            speakResponse(data.answer);
+
         } catch (err) {
             setResponse("Sorry, I'm having trouble connecting to the store data right now.");
         } finally {

@@ -64,7 +64,7 @@ export function HomePage() {
     return (
         <div className="min-h-screen bg-surface pb-24">
             {/* Header */}
-            <header className="bg-surface-card border-b border-border px-4 py-4 sticky top-0 z-10 flex justify-between items-center">
+            <header className="bg-surface-card border-b border-border px-4 py-4 sticky top-0 z-10 flex justify-between items-center animate-in slide-in-from-top-4 duration-700">
                 <div>
                     <h1 className="text-lg font-bold text-text-main">{data.store_name}</h1>
                     <p className="text-xs text-text-muted">{data.period}</p>
@@ -77,12 +77,15 @@ export function HomePage() {
             <main className="p-4 space-y-6">
 
                 {/* Insight Feed */}
-                {data.coach_message && (
-                    <InsightCard message={data.coach_message} />
-                )}
+                {/* Insight Feed */}
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100 fill-mode-backwards">
+                    {data.coach_message && (
+                        <InsightCard message={data.coach_message} />
+                    )}
+                </div>
 
                 {/* Metric Grid */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 fill-mode-backwards">
                     {data.kpis.map((kpi, idx: number) => (
                         <MetricCard
                             key={idx}
@@ -95,7 +98,7 @@ export function HomePage() {
                 </div>
 
                 {/* Chart Section */}
-                <div className="bg-surface-card border border-border rounded-lg p-4 shadow-sm">
+                <div className="bg-surface-card border border-border rounded-lg p-4 shadow-sm animate-in fade-in zoom-in-95 duration-1000 delay-300 fill-mode-backwards">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="text-sm font-bold text-text-main">Hourly Traffic</h3>
                         <span className="text-xs text-primary font-medium">Today</span>
