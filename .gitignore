@@ -13,3 +13,4 @@ data/processed/
 !data/processed/.gitkeep
 .vercel
 .env*.local
+gemini.md
