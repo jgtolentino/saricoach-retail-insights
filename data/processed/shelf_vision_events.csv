@@ -1,0 +1,2 @@
+id,store_id,event_timestamp,brand_id,facings,share_of_shelf,oos_flag,confidence
+a4cdaf68-dee5-4149-967e-e706a314e0ad,1,2025-12-02 08:00:00,1,3,1.0,False,0.9513431675034443

@@ -1,0 +1,2 @@
+transaction_id,line_no,product_id,brand_id,quantity,price_unit,subtotal
+ord1,1,101,1,2,15,30
