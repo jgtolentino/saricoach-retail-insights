@@ -56,5 +56,17 @@ We use a `Makefile` at the root to standardize common developer tasks ("Skills B
 *   `/service`: Python Backend (FastAPI/Agent).
 *   `/workflows`: n8n workflow JSON exports.
 
+## 6. 💾 Hybrid Knowledge Store Architecture
+
+We use a tiered approach for storing "Antigravity" knowledge (skills, tools, memories):
+
+| Environment | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Local Sandbox** | **SQLite** (`antigravity.db`) | Fast, local-only storage for development skills and temporary memories. |
+| **Production** | **Supabase + Odoo** | Persistent, scalable storage for production agent memory and enterprise resource planning. |
+
+*   **Local Tool:** `tools/antigravity_db.py` manages the local SQLite instance.
+*   **Sync Strategy:** Core skills are seeded from this document; production data lives in Supabase.
+
 ---
 *This file serves as the "System Context" for Antigravity operations in this workspace.*
