@@ -1,0 +1,27 @@
+ops:
+- id: knowledge.refresh
+  description: Refresh knowledge base from docs and push embeddings to Supabase.
+  runtime: make
+  command: make n8n-trigger-knowledge-refresh
+  input_schema:
+    type: object
+    properties:
+      source:
+        type: string
+        enum:
+        - docs
+        - erd
+        - tickets
+        - mixed
+    required:
+    - source
+- id: supabase.migrate
+  description: Apply Supabase migrations (db push) for this project.
+  runtime: make
+  command: make supabase-db-migrate
+  input_schema:
+    type: object
+    properties:
+      dryRun:
+        type: boolean
+        default: false

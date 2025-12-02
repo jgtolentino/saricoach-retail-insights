@@ -14,3 +14,5 @@ data/processed/
 .vercel
 .env*.local
 gemini.md
+antigravity.db
+orchestrator.db

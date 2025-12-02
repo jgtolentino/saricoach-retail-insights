@@ -17,5 +17,12 @@ test-all: test-unit test-api
 run-backend:
 	uvicorn service.app.main:app --reload --port 8000
 
+
 run-dashboard:
 	cd dashboard && npm run dev
+
+seed-capabilities:
+	python3 tools/seed_capabilities.py
+
+gen-capabilities:
+	python3 tools/gen_capabilities.py
