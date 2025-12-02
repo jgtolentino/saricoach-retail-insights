@@ -207,12 +207,3 @@ saricoach/
 
 -----
 
-### 🏁 Final Pre-Submission Checklist
-
-You are ready. Do these last 3 things:
-
-1.  **Repo Settings:** Go to GitHub -\> Settings. Ensure "Visibility" is **Public** so judges can see it.
-2.  **About Section:** On the main repo page, click the "Gear" icon on the right (About).
-      * **Website:** Paste your Vercel URL (`https://agents-intensive-saricoach.vercel.app`).
-      * **Topics:** Add `hackathon`, `ai-agent`, `supabase`, `fastapi`, `react`.
-3.  **Submission Form:** When asked for "Deployment URL," give the **Vercel** link. When asked for "Repo," give the **GitHub** link.
