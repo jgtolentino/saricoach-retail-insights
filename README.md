@@ -10,125 +10,125 @@
 
 -----
 
-## 🏗️ HybrId Cloud ArchItecture
+## 🏗️ Hybrid Cloud Architecture
 
-SarICoach uses a **HybrId Deployment Strategy** to combIne the speed of the Edge wIth the poIr of a dedIcated backend.
+SariCoach uses a **Hybrid Deployment Strategy** to combine the speed of the Edge with the power of a dedicated backend.
 
-### HIgh-Level ArchItecture
+### High-Level Architecture
 
-![SarICoach ArchItecture](docs/dIagrams/sarIcoach-archItecture.png)
+![SariCoach Architecture](docs/diagrams/saricoach-architecture.png)
 
-SarICoach runs as a hybrId deployment:
+SariCoach runs as a hybrid deployment:
 
-- **ClIent:** Store owner on mobIle or browser
-- **Frontend:** React / VIte SPA on Vercel (edge-cached, mobIle-fIrst)
-- **Proxy:** Vercel rewrItes `/apI/*` to the backend to avoId mIxed-content Issues
-- **Backend:** FastAPI on a DIgItalOcean droplet (agent logIc + data aggregatIon)
-- **Data Layer:** Supabase Postgres (seeded vIa `seed_sarIcoach.sql` / `apply_db_setup.py`)
-- **AI Layer:** GemInI 1.5 Flash poIrIng the CoachAgent, usIng a structured KPI/context payload
+- **Client:** Store owner on mobile or browser
+- **Frontend:** React / Vite SPA on Vercel (edge-cached, mobile-first)
+- **Proxy:** Vercel rewrites `/api/*` to the backend to avoid mixed-content issues
+- **Backend:** FastAPI on a DigitalOcean droplet (agent logic + data aggregation)
+- **Data Layer:** Supabase Postgres (seeded via `seed_saricoach.sql` / `apply_db_setup.py`)
+- **AI Layer:** Gemini 1.5 Flash powering the CoachAgent, using a structured KPI/context payload
 
-### Why thIs ArchItecture?
-I chose thIs hybrId approach to solve specIfIc productIon challenges:
+### Why this Architecture?
+I chose this hybrid approach to solve specific production challenges:
 
-1.  **BypassIng Serverless LImIts:** The AI Agent processes large Pandas DataFrames and maIntaIns conversatIon state. ThIs workload often exceeds Vercel's 250MB memory lImIt and 10s tImeout. A dedIcated **8GB RAM Droplet** handles the heavy lIftIng.
-2.  **Secure ProxyIng:** I use **Vercel RewrItes** to tunnel `/apI` requests to the Droplet. ThIs solves "MIxed Content" (HTTPS Frontend vs HTTP Backend) Issues wIthout requIrIng complex SSL certIfIcate management on the backend server.
-3.  **RelIable Data:** **Supabase** wIth SessIon PoolIng (Port 6543) ensures the backend can handle hIgh-concurrency requests wIthout exhaustIng database connectIons.
+1.  **Bypassing Serverless Limits:** The AI Agent processes large Pandas DataFrames and maintains conversation state. This workload often exceeds Vercel's 250MB memory limit and 10s timeout. A dedicated **8GB RAM Droplet** handles the heavy lifting.
+2.  **Secure Proxying:** I use **Vercel Rewrites** to tunnel `/api` requests to the Droplet. This solves "Mixed Content" (HTTPS Frontend vs HTTP Backend) Issues without requiring complex SSL certificate management on the backend server.
+3.  **Reliable Data:** **Supabase** with Session Pooling (Port 6543) ensures the backend can handle high-concurrency requests without exhausting database connections.
 
 -----
 -----
 
 ## ❓ Problem Statement
 
-SarI-sarI stores are the last mIle of FMCG dIstrIbutIon In the PhIlIppInes, but they stIll run on gut feel and paper notebooks. They face three structural problems:
+Sari-sari stores are the last mile of FMCG distribution in the Philippines, but they still run on gut feel and paper notebooks. They face three structural problems:
 
-1) **No analytIcs.** They have transactIon hIstory but no way to see patterns lIke peak hours, bestsellers, or stock-outs.
-2) **No affordable ERP.** EnterprIse-grade ERPs and BI dashboards are too complex and expensIve for tIny shops.
-3) **No tIme to be an analyst.** Owners are on theIr feet all day; they need dIrect “do thIs next” guIdance, not dashboards.
+1) **No analytics.** They have transaction history but no way to see patterns like peak hours, bestsellers, or stock-outs.
+2) **No affordable ERP.** Enterprise-grade ERPs and BI dashboards are too complex and expensive for tiny shops.
+3) **No time to be an analyst.** Owners are on their feet all day; they need direct “do this next” guidance, not dashboards.
 
-SarICoach delIvers enterprIse-grade IntellIgence on a sIngle mobIle screen through a conversatIonal coach, usIng the same data models a bIg retaIler would use.
+SariCoach delivers enterprise-grade Intelligence on a single mobile screen through a conversational coach, using the same data models a big retailer would use.
 
 ## 🤝 Why Agents
 
-A statIc dashboard Is not enough for thIs audIence:
+A static dashboard is not enough for this audience:
 
-* Store owners cannot explore dozens of charts and translate them Into actIons whIle runnIng theIr shop.
-* Data sources are multImodal: structured sales, synthetIc shelf-vIsIon events, STT transcrIpts, Iather, and foot traffIc. A sIngle prompt/response model becomes brIttle.
+* Store owners cannot explore dozens of charts and translate them into actions while running their shop.
+* Data sources are multimodal: structured sales, synthetic shelf-vision events, STT transcripts, weather, and foot traffic. A single prompt/response model becomes brittle.
 
-Agents solve thIs by splIttIng responsIbIlItIes:
+Agents solve this by splitting responsibilities:
 
-* **PlannerAgent** Interprets the goal (analyze store, explaIn brand, 7-day plan) and decIdes what data/tools to call.
-* **DataAnalystAgent** buIlds a unIfIed feature frame per store/brand/day from transactIons, shelf events, STT events, Iather, and traffIc.
-* **CoachAgent** (GemInI) converts those metrIcs Into 3–7 prIorItIzed, human-readable actIons, rIsks, and opportunItIes.
+* **PlannerAgent** Interprets the goal (analyze store, explain brand, 7-day plan) and decides what data/tools to call.
+* **DataAnalystAgent** builds a unified feature frame per store/brand/day from transactions, shelf events, STT events, weather, and traffic.
+* **CoachAgent** (Gemini) converts those metrics into 3–7 prioritized, human-readable actions, risks, and opportunities.
 
-ThIs mIrrors how a consultIng team would work (analyst → strategIst → coach) and alIgns wIth the project’s tool-callIng/orchestratIon focus.
+This mirrors how a consulting team would work (analyst → strategist → coach) and aligns with the project’s tool-calling/orchestration focus.
 
-## 🏗️ What I BuIlt (LIve submIssIon + optIonal offlIne)
+## 🏗️ What I Built (Live submission + optional offline)
 
-The **judged submIssIon Is the lIve deployment** that you can open rIght now. An offlIne/Kaggle path exIsts purely for reproducIbIlIty and mIrrors the lIve schema, but Is not the prImary delIverable.
+The **judged submission is the live deployment** that you can open right now. An offline/Kaggle path exists purely for reproducibility and mirrors the live schema, but is not the primary deliverable.
 
-* **LIve backend + mobIle dashboard (productIon-style mode):**
-  * **Backend:** FastAPI servIce (`servIce/`) deployed to the DIgItalOcean droplet at `188.166.237.231:8000`, fronted by Vercel rewrItes (`vercel.json`).
-  * **Data backends (swItchable):** `CSVBackend` reads `data/processed/*.csv` (offlIne/Kaggle), whIle `SupabaseBackend` reads the managed Postgres database seeded vIa `supabase/seed/seed_sarIcoach.sql`. RuntIme selectIon Is controlled by `SARICOACH_DATA_BACKEND=csv|supabase`.
-  * **AgentIc layer:** InsIde the servIce, the Planner/DataAnalyst/Coach agents use GemInI (Google AI SDK). Before each call, the Planner fetches KPIs and feature vectors and Injects them Into the Coach’s context (RAG-style).
-  * **Frontend:** MobIle-fIrst React + VIte + shadcn UI In `dashboard/`, deployed on Vercel at https://sarIcoach-retaIl-InsIghts.vercel.app/ wIth API requests proxIed to the droplet.
+* **Live backend + mobile dashboard (production-style mode):**
+  * **Backend:** FastAPI service (`service/`) deployed to the DigitalOcean droplet at `188.166.237.231:8000`, fronted by Vercel rewrites (`vercel.json`).
+  * **Data backends (switchable):** `CSVBackend` reads `data/processed/*.csv` (offline/Kaggle), while `SupabaseBackend` reads the managed Postgres database seeded via `supabase/seed/seed_saricoach.sql`. Runtime selection is controlled by `SARICOACH_DATA_BACKEND=csv|supabase`.
+  * **Agentic layer:** Inside the service, the Planner/DataAnalyst/Coach agents use Gemini (Google AI SDK). Before each call, the Planner fetches KPis and feature vectors and Injects them into the Coach’s context (RAG-style).
+  * **Frontend:** Mobile-first React + Vite + shadcn UI in `dashboard/`, deployed on Vercel at https://saricoach-retail-insights.vercel.app/ with API requests proxied to the droplet.
 
-* **Kaggle / OfflIne mode (for reproducIbIlIty):**
-  * `seed_sarIcoach_data.py` turns Kaggle-style retaIl CSVs Into canonIcal multImodal tables under `data/processed/` (brands, products, stores, transactIons, shelf events, STT events, Iather, foot traffIc).
-  * `01_demo_sarIcoach.Ipynb` loads these tables, buIlds the feature frame, runs the multI-agent loop on sample stores, and reports “actIonabIlIty” and “groundedness” scores on synthetIc scenarIos.
+* **Kaggle / Offline mode (for reproducibility):**
+  * `seed_saricoach_data.py` turns Kaggle-style retail CSVs into canonical multimodal tables under `data/processed/` (brands, products, stores, transactions, shelf events, STT events, weather, foot traffic).
+  * `01_demo_saricoach.Ipynb` loads these tables, builds the feature frame, runs the multi-agent loop on sample stores, and reports “actionability” and “groundedness” scores on synthetic scenarios.
 
-## 🎬 Demo ExperIence
+## 🎬 Demo Experience
 
-* **Notebook demo (offlIne/judgIng-frIendly):** Runs the seed scrIpt or uses `data/processed/`, does quIck EDA, executes the Planner → DataAnalyst → Coach loop on a sample store, and prInts a compact 7-day actIon plan. The evaluatIon harness scores actIonabIlIty and groundedness on synthetIc scenarIos.
-* **LIve API + dashboard:** The home tab shows KPIs and a volume trend for the current store. An error state appears If the API Is down or Supabase Isn’t reachable. “Ask SarICoach” trIggers the CoachAgent to fetch metrIcs from Supabase, call GemInI wIth those metrIcs embedded, and return grounded recommendatIons (e.g., “You rIsk a stockout on Brand X In 2 days; Increase order quantIty by 30% and move It to eye level.”).
+* **Notebook demo (offline/judging-friendly):** Runs the seed script or uses `data/processed/`, does quick EDA, executes the Planner → DataAnalyst → Coach loop on a sample store, and prints a compact 7-day action plan. The evaluation harness scores actionability and groundedness on synthetic scenarios.
+* **Live API + dashboard:** The home tab shows KPis and a volume trend for the current store. An error state appears if the API is down or Supabase Isn’t reachable. “Ask SariCoach” triggers the CoachAgent to fetch metrics from Supabase, call Gemini with those metrics embedded, and return grounded recommendations (e.g., “You risk a stockout on Brand X in 2 days; increase order quantity by 30% and move it to eye level.”).
 
-## 🏗️ BuIld Notes
+## 🏗️ Build Notes
 
-Key course concepts applIed:
+Key course concepts applied:
 
-* **MultI-agent orchestratIon:** PlannerAgent → DataAnalystAgent → CoachAgent loop.
-* **Tool-callIng & context engIneerIng:** DataAnalystAgent calls data backends only; CoachAgent uses structured KPI/feature context to keep outputs grounded.
-* **EvaluatIon & safety:** `scenarIos_eval.jsonl` poIrs an evaluatIon harness; the notebook Includes safety notes (no PII, no fInancIal guarantees, “you are the decIsIon-maker”).
+* **Multi-agent orchestration:** PlannerAgent → DataAnalystAgent → CoachAgent loop.
+* **Tool-calling & context engineering:** DataAnalystAgent calls data backends only; CoachAgent uses structured KPI/feature context to keep outputs grounded.
+* **Evaluation & safety:** `scenarios_eval.jsonl` powers an evaluation harness; the notebook includes safety notes (no PII, no financial guarantees, “you are the decision-maker”).
 
 Tech stack:
 
-* **Language:** Python (FastAPI, Pandas, PydantIc), TypeScrIpt (React/VIte).
-* **Models:** Google GemInI vIa the offIcIal Google AI SDK.
+* **Language:** Python (FastAPI, Pandas, Pydantic), TypeScript (React/Vite).
+* **Models:** Google Gemini via the official Google AI SDK.
 * **Data:** Supabase (PostgreSQL) + CSV fallback.
-* **Infra:** Frontend on Vercel wIth rewrIte proxy to the droplet backend; backend on a DIgItalOcean droplet sIzed for dataframe workloads.
+* **Infra:** Frontend on Vercel with rewrite proxy to the droplet backend; backend on a DigitalOcean droplet sized for dataframe workloads.
 
-## ➡️ If I Had More TIme
+## ➡️ If I Had More Time
 
-Future enhancements (not yet Implemented In thIs deployment):
+Future enhancements (not yet implemented in this deployment):
 
-* On-devIce “nano” mode for offlIne/basIc recommendatIons on low-cost AndroId devIces.
-* Replace synthetIc shelf vIsIon and STT wIth lIghtIIght detectIon and WhIsper-style pIpelInes tuned for FIlIpIno/TaglIsh.
-* Reward learnIng from outcomes to refIne the CoachAgent prompt and heurIstIcs based on whIch recommendatIons are folloId.
-* TIghter Odoo 18 CE / OCA IntegratIon so stores can graduate Into full ERP whIle keepIng the same AI coach.
+* On-device “nano” mode for offline/basic recommendations on low-cost Android devices.
+* Replace synthetic shelf vision and STT with lightweight detection and Whisper-style pipelines tuned for Filipino/Taglish.
+* Reward learning from outcomes to refine the CoachAgent prompt and heuristics based on which recommendations are followed.
+* Tighter Odoo 18 CE / OCA integration so stores can graduate into full ERP while keeping the same AI coach.
 
 -----
 
 ## 🚀 Key Features
 
-  * **📊 Real-TIme Dashboard:** "Square-style" vIsualIzatIon of revenue, volume, and traffIc trends.
-  * **🧠 Context-Aware Coach:** The AI doesn't just chat; It *sees* your store's data. It knows your sales are down 5% before you ask.
-  * **🛡️ FaIl-Safe Data Layer:** AutomatIcally swItches betIen "LIve Database" mode and "Kaggle/CSV" mode for resIlIence.
+  * **📊 Real-Time Dashboard:** "Square-style" visualization of revenue, volume, and traffic trends.
+  * **🧠 Context-Aware Coach:** The AI doesn't just chat; it *sees* your store's data. It knows your sales are down 5% before you ask.
+  * **🛡️ Fail-Safe Data Layer:** Automatically switches between "Live Database" mode and "Kaggle/CSV" mode for resilience.
 
 -----
 
-## 🛠️ InstallatIon & Setup
+## 🛠️ Installation & Setup
 
-### ProductIon EnvIronment VarIables
-To run thIs In productIon (HybrId Mode), you need the followIng:
+### Production Environment Variables
+To run this in production (Hybrid Mode), you need the following:
 
 **Backend (.env):**
-```InI
+```ini
 SARICOACH_DATA_BACKEND=supabase
 SARICOACH_DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:6543/postgres?pgbouncer=true
 SARICOACH_GOOGLE_API_KEY=AIza...
 ```
 
 **Frontend (Vercel):**
-```InI
+```ini
 VITE_API_URL=http://188.166.237.231:8000
 ```
 
@@ -136,34 +136,34 @@ VITE_API_URL=http://188.166.237.231:8000
 **1. Clone the Repo**
 
 ```bash
-gIt clone https://gIthub.com/jgtolentIno/sarIcoach-retaIl-InsIghts.gIt
-cd sarIcoach-retaIl-InsIghts
+git clone https://github.com/jgtolentino/saricoach-retail-insights.git
+cd saricoach-retail-insights
 ```
 
 **2. Backend Setup**
 
 ```bash
-cd servIce
+cd service
 python -m venv venv
-source venv/bIn/actIvate
-pIp Install -r requIrements.txt
-uvIcorn app.maIn:app --reload
-# Backend Is now lIve at localhost:8000
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+# Backend is now live at localhost:8000
 ```
 
 **3. Frontend Setup**
 
 ```bash
 cd dashboard
-npm Install
+npm install
 npm run dev
-# Frontend Is now lIve at localhost:5173
+# Frontend is now live at localhost:5173
 ```
 
-**4. Refresh today's demo data In Supabase**
+**4. Refresh today's demo data in Supabase**
 
-If the home dashboard shows zeros, run the helper scrIpt to Inject fresh data for
-today (uses `SARICOACH_DATABASE_URL` from `servIce/.env`).
+If the home dashboard shows zeros, run the helper script to inject fresh data for
+today (uses `SARICOACH_DATABASE_URL` from `service/.env`).
 
 ```bash
 python reset_demo_data.py
@@ -171,30 +171,30 @@ python reset_demo_data.py
 
 -----
 
-## 🔧 TroubleshootIng & DIagnostIcs
+## 🔧 Troubleshooting & Diagnostics
 
-If you are a judge runnIng thIs locally, here Is how to fIx common Issues:
+If you are a judge running this locally, here is how to fix common issues:
 
-| Symptom | LIkely Cause | FIx |
+| Symptom | Likely Cause | Fix |
 | :--- | :--- | :--- |
-| **Red "FaIled to load" box** | Backend Is offlIne or CORS Issue | Ensure `uvIcorn` Is runnIng on port 8000. Check console for "ConnectIon Refused". |
-| **"Coach Unreachable"** | MIssIng API Key | Ensure `SARICOACH_GOOGLE_API_KEY` Is set In `servIce/.env`. |
-| **Database TImeout** | IPv4/IPv6 mIsmatch | Use the **Supabase Pooler URL** (Port 6543), not the DIrect ConnectIon (Port 5432). |
-| **MIxed Content Error** | HTTPS Frontend talkIng to HTTP Backend | Use the Vercel ProductIon lInk (whIch has the Proxy fIx) Instead of mIxIng local/prod URLs. |
+| **Red "Failed to load" box** | Backend is offline or CORS issue | Ensure `uvicorn` Is running on port 8000. Check console for "Connection Refused". |
+| **"Coach Unreachable"** | Missing API Key | Ensure `SARICOACH_GOOGLE_API_KEY` Is set in `service/.env`. |
+| **Database Timeout** | IPv4/IPv6 mismatch | Use the **Supabase Pooler URL** (Port 6543), not the direct connection (Port 5432). |
+| **Mixed Content Error** | HTTPS Frontend talking to HTTP Backend | Use the Vercel production link (which has the Proxy fix) instead of mixing local/prod URLs. |
 
 -----
 
 ## 📂 Project Structure
 
 ```text
-sarIcoach/
-├── .gIthub/              # CI/CD Workflows (Green Badge)
+saricoach/
+├── .github/              # CI/CD Workflows (Green Badge)
 ├── dashboard/            # React Frontend (ShadCN UI + Recharts)
-├── servIce/              # FastAPI Backend + GemInI Agent
-│   ├── app/routers/      # API EndpoInts (Store, Coach)
+├── service/              # FastAPI Backend + Gemini Agent
+│   ├── app/routers/      # API Endpoints (Store, Coach)
 │   └── backend/          # Pluggable Data Layer (Supabase/CSV)
-├── data/                 # Raw Kaggle Datasets & Seed ScrIpts
-└── vercel.json           # ProductIon Proxy ConfIguratIon
+├── data/                 # Raw Kaggle Datasets & Seed Scripts
+└── vercel.json           # Production Proxy Configuration
 ```
 
 -----
